@@ -49,6 +49,10 @@ Then show the filled requirements and ask the user for **G0** approval.
 
 - Default role is **Manager**. Act as Designer or Reviewer only when assigned
   (see ROLES.md). The user always gives the final approval.
+- Design review has two reviewers: **function** and **DFM** (ROL-06). Run
+  each in a new chat/session that sees only the files and requirements.
+  With one chat, do them one after another and do not reuse the Designer's
+  reasoning.
 - Never record an approval the user did not give. Never show a check as passed
   if it was not run. Use `cadctl.py`, do not edit the JSON by hand.
 - No CAD access (web chat): give the user step-by-step CAD instructions

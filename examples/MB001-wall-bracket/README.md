@@ -6,8 +6,8 @@ A shelf bracket that went through two FDM prototypes and then moved to
 | File | What it shows |
 | :--- | :--- |
 | [requirements.md](requirements.md) | Filled requirements, revision history P01 → P02 → R01 |
-| [review.md](review.md) | Reviewer findings in `F-001` format with rule IDs |
-| [workflow-state.json](workflow-state.json) | State: production R01, G0 and design review done, G1 waiting |
+| [review.md](review.md) | Function and DFM reviewer findings in `F-001` format with rule IDs |
+| [workflow-state.json](workflow-state.json) | State: production R01, G0 and both design reviews done, G1 waiting |
 
 No CAD files are included; the example shows the process, not the model.
 

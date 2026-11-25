@@ -17,7 +17,8 @@
     "RELEASE": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
   },
   "reviews": {
-    "design": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "function": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "dfm": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
     "release": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
   },
   "blocking_issues": [],

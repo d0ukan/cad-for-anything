@@ -2,7 +2,7 @@
 
 [English](README.md) · **Türkçe**
 
-[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.1.0 ([değişiklikler](CHANGELOG.md))
+[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.2.0 ([değişiklikler](CHANGELOG.md))
 
 Mekanik parça ve montaj tasarımı (3D baskı, CNC, sac metal) için küçük bir
 şablon. **Herhangi bir yapay zeka** ve **herhangi bir CAD programı** ile
@@ -24,8 +24,9 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
   test edecek misiniz?* Evet ise parça baskıya uygun tasarlanır
   (`P01`, `P02` …). Baskı işe yarayınca proje gerçek malzeme ve yönteme
   geçer (`R01`).
-- **Üç rol:** Manager (sorular, kayıtlar), Designer (model, çıktılar),
-  Reviewer (bağımsız kontrol). Bkz. [ROLES.md](ROLES.md).
+- **Roller:** Manager (sorular, kayıtlar), Designer (model, çıktılar) ve
+  iki bağımsız reviewer — **fonksiyon** (dayanım, geçmeler) ve **DFM**
+  (üretilebilir mi). Bkz. [ROLES.md](ROLES.md).
 - **Üç kapı, hepsini siz onaylarsınız:** G0 gereksinimler → G1 tasarım →
   RELEASE üretim dosyaları.
 - **Kimlikli kısa kurallar** [rules/](rules/README.md) altında: malzeme (MAT),
@@ -33,12 +34,12 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 
 ```
 [FDM prototip P01..] --test OK--> [üretim R01..]
-   her revizyon:  G0 -> tasarım -> review -> G1 -> export -> review -> RELEASE
+   her revizyon:  G0 -> tasarım -> 2 review -> G1 -> export -> review -> RELEASE
 ```
 
 ## Yardımcı araç
 
-Bağımlılık yok, Python 3.9+.
+Bağımlılık yok, Python 3.10+.
 
 ```
 python scripts/cadctl.py next      # şimdi ne yapılacak, kim yapacak, hangi komut

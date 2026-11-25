@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.0 — 2026-11-25
+
+- Two independent design reviewers: function and DFM (ROL-06).
+  Production needs both PASS; prototype needs at least one; any FAIL blocks G1.
+- Manager checks requirements against review reports before G1 (ROL-07).
+- `review design` replaced by `review function` and `review dfm`
+  (state field `reviews.design` → `reviews.function`, `reviews.dfm`).
+- Python 3.10+ (3.9 is not available on the CI Ubuntu image).
+
 ## v0.1.0 — 2026-11-25
 
 First version.

@@ -49,7 +49,8 @@ class Base(unittest.TestCase):
 
     def release_current(self, prefix, exts):
         self.ok("approve", "G0", "--evidence", "chat")
-        self.ok("review", "design", "PASS", "--evidence", "review.md")
+        self.ok("review", "function", "PASS", "--evidence", "review.md")
+        self.ok("review", "dfm", "PASS", "--evidence", "review.md")
         self.ok("approve", "G1", "--evidence", "chat")
         self.make_files(prefix, exts)
         self.ok("review", "release", "PASS", "--evidence", "review.md")
@@ -111,7 +112,7 @@ class TestGates(Base):
     def test_blocking_issue_stops_g1(self):
         self.fill_prototype()
         self.ok("approve", "G0", "--evidence", "chat")
-        self.ok("review", "design", "PASS", "--evidence", "r")
+        self.ok("review", "dfm", "PASS", "--evidence", "r")
         self.ok("block", "F-001")
         self.assertEqual(self.run_cli("approve", "G1", "--evidence", "chat")[0], 1)
         self.assertIn("F-001", self.ok("next"))
@@ -121,7 +122,7 @@ class TestGates(Base):
     def test_release_needs_files(self):
         self.fill_prototype()
         self.ok("approve", "G0", "--evidence", "chat")
-        self.ok("review", "design", "PASS", "--evidence", "r")
+        self.ok("review", "dfm", "PASS", "--evidence", "r")
         self.ok("approve", "G1", "--evidence", "chat")
         self.make_files("MB001-P01", ["step"])
         code, out = self.run_cli("check")
@@ -131,7 +132,7 @@ class TestGates(Base):
     def test_bad_file_name_reported(self):
         self.fill_prototype()
         self.ok("approve", "G0", "--evidence", "chat")
-        self.ok("review", "design", "PASS", "--evidence", "r")
+        self.ok("review", "dfm", "PASS", "--evidence", "r")
         self.ok("approve", "G1", "--evidence", "chat")
         self.make_files("MB001-P01", ["step", "stl"])
         (self.tmp / "release" / "MB001-P01" / "bracket_final.stl").write_text("x")
@@ -142,6 +143,39 @@ class TestGates(Base):
     def test_evidence_required(self):
         self.fill_prototype()
         self.assertEqual(self.run_cli("approve", "G0", "--evidence", " ")[0], 1)
+
+
+class TestTwoReviewers(Base):
+    def go_production(self):
+        self.fill_prototype()
+        self.release_current("MB001-P01", ["step", "stl"])
+        self.ok("promote", "--evidence", "test ok")
+        self.ok("approve", "G0", "--evidence", "chat")
+
+    def test_prototype_needs_one_review(self):
+        self.fill_prototype()
+        self.ok("approve", "G0", "--evidence", "chat")
+        self.assertIn("function or dfm", self.ok("next"))
+        self.ok("review", "function", "PASS", "--evidence", "r")
+        self.ok("approve", "G1", "--evidence", "chat")
+
+    def test_production_needs_both(self):
+        self.go_production()
+        self.ok("review", "function", "PASS", "--evidence", "r")
+        code, out = self.run_cli("approve", "G1", "--evidence", "chat")
+        self.assertEqual(code, 1)
+        self.assertIn("dfm", out)
+        self.ok("review", "dfm", "PASS", "--evidence", "r")
+        self.ok("approve", "G1", "--evidence", "chat")
+
+    def test_fail_blocks_even_in_prototype(self):
+        self.fill_prototype()
+        self.ok("approve", "G0", "--evidence", "chat")
+        self.ok("review", "function", "PASS", "--evidence", "r")
+        self.ok("review", "dfm", "FAIL", "--evidence", "overhang 70 deg")
+        code, out = self.run_cli("approve", "G1", "--evidence", "chat")
+        self.assertEqual(code, 1)
+        self.assertIn("dfm (FAIL", out)
 
 
 class TestFlow(Base):
@@ -178,7 +212,7 @@ class TestFlow(Base):
     def test_assembly_part_files_accepted(self):
         self.fill_prototype()
         self.ok("approve", "G0", "--evidence", "chat")
-        self.ok("review", "design", "PASS", "--evidence", "r")
+        self.ok("review", "dfm", "PASS", "--evidence", "r")
         self.ok("approve", "G1", "--evidence", "chat")
         folder = self.tmp / "release" / "MB001-P01"
         folder.mkdir(parents=True)

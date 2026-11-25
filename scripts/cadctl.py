@@ -9,12 +9,12 @@ Commands:
   set FIELD [VALUE]           Set a field (omit VALUE to clear)
   approve G0|G1|RELEASE --evidence TEXT [--by NAME]
   revoke  G0|G1|RELEASE
-  review  design|release PASS|FAIL --evidence TEXT [--by NAME]
+  review  function|dfm|release PASS|FAIL --evidence TEXT [--by NAME]
   block ID / unblock ID       Add/remove a blocking issue (e.g. F-001)
   bump                        Next revision (P01 -> P02); approvals reset
   promote --evidence TEXT     Prototype passed: move to production, R01
 
-No third-party dependencies. Python 3.9+.
+No third-party dependencies. Python 3.10+.
 """
 import argparse
 import datetime
@@ -28,7 +28,8 @@ DEFAULT_STATE = ROOT / "project" / "workflow-state.json"
 DEFAULT_RELEASE = ROOT / "project" / "release"
 
 GATES = ("G0", "G1", "RELEASE")
-REVIEWS = ("design", "release")
+REVIEWS = ("function", "dfm", "release")
+DESIGN_REVIEWS = ("function", "dfm")
 PHASES = ("prototype", "production")
 PROCESSES = ("fdm", "sla", "sls", "cnc", "sheet-metal", "other")
 CHOICES = {
@@ -174,6 +175,19 @@ def release_file_errors(state, release_root):
     return errors
 
 
+def design_review_missing(state):
+    """Production needs both function and dfm PASS; prototype needs at least one.
+    A FAIL on the current revision always blocks."""
+    rev, r = state.get("revision"), state["reviews"]
+    failed = [k for k in DESIGN_REVIEWS if ok(r[k], "FAIL", rev)]
+    if failed:
+        return [f"{k} (FAIL, fix and re-review)" for k in failed]
+    passed = [k for k in DESIGN_REVIEWS if ok(r[k], "PASS", rev)]
+    if state.get("phase") == "prototype":
+        return [] if passed else ["function or dfm"]
+    return [k for k in DESIGN_REVIEWS if k not in passed]
+
+
 def g0_missing(state):
     missing = [f for f in ("project_name", "project_code", "phase", "revision",
                            "units", "tolerance_standard", "cad_tool", "process", "material")
@@ -202,9 +216,11 @@ def next_step(state, release_root):
     if not ok(g["G0"], "APPROVED", rev):
         return ("User", f"Approve requirements (G0) for {rev}",
                 'cadctl.py approve G0 --evidence "<where the user approved>"')
-    if not ok(r["design"], "PASS", rev):
-        return ("Designer, then Reviewer", f"Design {rev}, then independent design review",
-                'cadctl.py review design PASS --evidence "<review file / findings>"')
+    missing = design_review_missing(state)
+    if missing:
+        return ("Designer, then Reviewers", f"Design {rev}, then independent review: "
+                + " / ".join(missing) + " (ROLES.md ROL-06)",
+                f'cadctl.py review {missing[0].split()[0]} PASS --evidence "<review file>"')
     if state.get("blocking_issues"):
         return ("Designer", "Fix blocking issues: " + ", ".join(state["blocking_issues"]),
                 "cadctl.py unblock <ID>")
@@ -247,8 +263,7 @@ def gate_errors(state, gate, release_root):
     if gate in ("G1", "RELEASE") and not ok(g["G0"], "APPROVED", rev):
         errors.append(f"G0 not approved for {rev}")
     if gate == "G1":
-        if not ok(r["design"], "PASS", rev):
-            errors.append(f"design review not PASS for {rev}")
+        errors.extend(f"design review missing: {m}" for m in design_review_missing(state))
         if state.get("blocking_issues"):
             errors.append("open blocking issues: " + ", ".join(state["blocking_issues"]))
     if gate == "RELEASE":
