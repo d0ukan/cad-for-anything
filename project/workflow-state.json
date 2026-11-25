@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "project_name": null,
+  "project_code": null,
+  "phase": null,
+  "revision": null,
+  "units": null,
+  "tolerance_standard": null,
+  "cad_tool": null,
+  "process": null,
+  "target_process": null,
+  "material": null,
+  "deliverables": [],
+  "gates": {
+    "G0": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "G1": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "RELEASE": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
+  },
+  "reviews": {
+    "design": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "release": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
+  },
+  "blocking_issues": [],
+  "history": []
+}

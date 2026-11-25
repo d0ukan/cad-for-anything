@@ -1,0 +1,20 @@
+# cad-for-anything
+
+> AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Manager / Designer / Reviewer roles, user approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py). Start with AGENTS.md; do not read every rule file.
+
+## Start here
+- [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order.
+- [ROLES.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/ROLES.md): Roles, gates and the prototype → production flow.
+- [rules/README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/README.md): Rule index and when to open each file.
+- Run `python scripts/cadctl.py next` (or ask the user to run it) to get the next step.
+
+## Rules (open only the one you need)
+- [rules/01-material-process.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/01-material-process.md): Choosing material and process (MAT).
+- [rules/02-tolerances-fits.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/02-tolerances-fits.md): Tolerances and fits (TOL).
+- [rules/03-dfm.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/03-dfm.md): Design for FDM, SLA/SLS, CNC, sheet metal (DFM).
+- [rules/04-drawings-delivery.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/04-drawings-delivery.md): STEP, STL, PDF drawing, DXF delivery (DWG).
+- [rules/05-naming-revision.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/05-naming-revision.md): File names and revisions (REV).
+
+## Optional
+- [examples/MB001-wall-bracket/README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/examples/MB001-wall-bracket/README.md): Small filled example.
+- [README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/README.md): Human overview (English); README.tr.md is Turkish.

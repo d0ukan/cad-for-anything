@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project_name": "Wall bracket",
+  "project_code": "MB001",
+  "phase": "production",
+  "revision": "R01",
+  "units": "mm",
+  "tolerance_standard": "ISO",
+  "cad_tool": "FreeCAD",
+  "process": "sheet-metal",
+  "target_process": "sheet-metal",
+  "material": "S235 steel, 2 mm, zinc plated",
+  "deliverables": [],
+  "gates": {
+    "G0": {"status": "APPROVED", "revision": "R01", "evidence": "requirements.md approved in chat", "by": "user", "date": "2026-11-20"},
+    "G1": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null},
+    "RELEASE": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
+  },
+  "reviews": {
+    "design": {"status": "PASS", "revision": "R01", "evidence": "review.md (R01)", "by": "reviewer", "date": "2026-11-22"},
+    "release": {"status": "PENDING", "revision": null, "evidence": null, "by": null, "date": null}
+  },
+  "blocking_issues": [],
+  "history": [
+    {"revision": "P01", "date": "2026-11-12", "event": "bump to P02"},
+    {"revision": "P02", "date": "2026-11-18", "event": "prototype passed, promoted to production", "evidence": "PETG print fits both shelf tubes; held 5 kg for 24 h"}
+  ]
+}

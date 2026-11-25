@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.9", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Template state
+        run: python scripts/cadctl.py check
+      - name: Example project
+        shell: bash
+        run: |
+          S="--state examples/MB001-wall-bracket/workflow-state.json"
+          python scripts/cadctl.py $S check
+          python scripts/cadctl.py $S next | grep -q "G1"
+
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          # raw.githubusercontent links in llms.txt are checked by the unit tests
+          args: --no-progress --exclude 'raw\.githubusercontent\.com/d0ukan/cad-for-anything' './**/*.md' llms.txt
+          fail: true
