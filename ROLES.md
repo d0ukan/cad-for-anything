@@ -1,8 +1,8 @@
 # Roles and gates
 
 Roles are not models or products. Everything runs in one session: the
-Manager plays the other roles itself, step by step, or gives them to
-sub-agents inside the same session (ROL-09). The **user** has the final say.
+Manager also does the Designer work; reviews may run as sub-agents inside
+the same session (ROL-09). The **user** has the final say.
 
 | Role | Does | May change design files? |
 | :--- | :--- | :---: |
@@ -26,16 +26,8 @@ Every approval and review is tied to one revision. A new revision
 
 ## Flow
 
-```
-            ┌──────────── prototype phase (FDM, P01, P02 …) ───────────┐
-G0 → design → 2 reviews → G1 → export → review → RELEASE → print & test
-                                                              │
-                         test fails: bump (P02) ◄─────────────┤
-                         test OK: promote → production phase (R01)
-                                   G0 → design → 2 reviews → G1 → export → review → RELEASE
-```
-
-Without a prototype, the project starts directly in the production phase.
+G0 → design → reviews → G1 → export → release review → RELEASE. Prototype:
+print and test, then `bump` (P02) or `promote` (R01). Diagram: README.md.
 
 ## Rules for roles
 
@@ -64,6 +56,6 @@ Without a prototype, the project starts directly in the production phase.
   "n/a + reason". Without CAD access the reviewer asks the user to run the
   CAD interference check and send the result; no PASS before it arrives.
 - **ROL-09** — One session per project. The AI never opens a new chat,
-  session or window by itself. Sub-agents inside the session are allowed
-  for Designer and Reviewer work; the Manager stays in the main session,
+  session or window by itself. Sub-agents inside the session are used only
+  for reviews (they cost extra tokens); the Manager stays in the main session,
   records results with `cadctl.py` and asks the user for every approval.

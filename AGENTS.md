@@ -56,10 +56,10 @@ Then show the filled requirements and ask the user for **G0** approval.
   (see ROLES.md). The user always gives the final approval.
 - **One session.** The whole project runs in this one chat/session. Never
   open a new chat, session or window yourself (ROL-09).
-- **Sub-agents.** If your tool can start sub-agents inside this session, use
-  them for Designer and Reviewer work. Give each one only the files,
-  `requirements.md` and its role; you (Manager) collect the results here.
-  No sub-agents → play the roles one after another yourself.
+- **Sub-agents only for reviews.** Designer work stays in this session. If
+  your tool can start sub-agents inside this session, use one per review,
+  given only the files, `requirements.md` and its role. No sub-agents → do
+  the review yourself as a separate step. Prototype: one review is enough.
 - Design review has two reviewers: **function** and **DFM** (ROL-06), each
   as its own sub-agent (or step) that sees only the files and requirements,
   not the Designer's reasoning or the other review. Interference, motion
@@ -68,47 +68,16 @@ Then show the filled requirements and ask the user for **G0** approval.
   with an AI client or a terminal. Never commit or push unless the user asks.
 - Never record an approval the user did not give. Never show a check as passed
   if it was not run. Use `cadctl.py`, do not edit the JSON by hand.
-- No CAD access (web chat): give the user step-by-step CAD instructions
-  (sketch, constraints, features, dimensions). The user builds the model and
-  sends screenshots, measurements or exported files back.
 - Cite rule IDs (e.g. `DFM-03`) when you apply or flag a rule.
 - **Stop and require a qualified human engineer** at G1 and Release if the
   part is safety-critical: lifting/hanging people or heavy loads overhead,
   pressure vessels, vehicles/aircraft structure, medical contact.
   You may keep helping, but say this clearly (`AI-01`).
 
-## 5. CAD access check (after question 6)
+## 5. CAD access (after question 6)
 
-1. **Look at your own tools.** Is an MCP tool for the chosen CAD program
-   connected? Call a harmless read-only tool (e.g. list open documents) to
-   confirm it works. Do not guess.
-2. **Connected** → tell the user, and as Designer build and change the model
-   through it.
-3. **Not connected** → show the user the options for their program from the
-   table below and ask: *set up an MCP server, or continue with step-by-step
-   instructions?* Never install anything yourself without the user's yes.
-4. **CadQuery, OpenSCAD, JSCAD or other code-based CAD** → no MCP needed if you
-   can run code. Write the script in `project/cad/`, run it, export
-   STEP/STL (OpenSCAD, JSCAD: STL/3MF only, no STEP). All run on Windows,
-   macOS and Linux. Examples: `examples/MB001-wall-bracket/cad/`.
-5. **Nothing available** → step-by-step CAD instructions (section 4).
-
-Record the result in `requirements.md` → Identity → CAD program
-(e.g. "Fusion, via MCP" or "SolidWorks, manual"). Gates and reviews stay the
-same in all cases (`AI-06`).
-
-Known MCP servers. Community-reported and **not tested by this repo**;
-check the project before installing it.
-
-| CAD | Official | Community |
-| :--- | :--- | :--- |
-| Fusion | [Autodesk MCP servers](https://help.autodesk.com/view/ADSKMCP/ENU/) | [faust-machines/fusion360-mcp-server](https://github.com/faust-machines/fusion360-mcp-server) |
-| Inventor | Local MCP server mentioned in Inventor 2027 help; check your version | [NeonGlay/inventor-mcp](https://github.com/NeonGlay/inventor-mcp) (Windows, COM) |
-| SolidWorks | — | [eyfel/mcp-server-solidworks](https://github.com/eyfel/mcp-server-solidworks) |
-| CATIA V5 | — | [daiemon12/catia-v5-mcp-server](https://github.com/daiemon12/catia-v5-mcp-server) (Windows, licensed CATIA) |
-| Onshape | FeatureScript MCP server (Onshape Labs, Onshape App Store) | — |
-| FreeCAD | — | [neka-nat/freecad-mcp](https://github.com/neka-nat/freecad-mcp), [spkane/freecad-addon-robust-mcp-server](https://github.com/spkane/freecad-addon-robust-mcp-server) |
-| CadQuery, OpenSCAD, JSCAD | Not needed (code) | — |
+Open [rules/06-cad-access.md](rules/06-cad-access.md): check for an MCP tool,
+code-based CAD or step-by-step instructions, and the known MCP servers.
 
 ## 6. Prototype → production
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.6.1 — 2026-11-26
+
+Lower token use (start-up reading about 20 % smaller):
+- Sub-agents only for the reviews; Designer work stays in the main session.
+- CAD access check and MCP list moved from AGENTS.md to
+  `rules/06-cad-access.md` (CAD-01…06), opened only after question 6.
+- ROLES.md: ASCII flow replaced by one line (diagram is in the README).
+
 ## v0.6.0 — 2026-11-26
 
 - Example: the bracket model also in JSCAD / JavaScript

@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.6.0-1d4f7a" alt="sürüm v0.6.0">
+  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.6.1-1d4f7a" alt="sürüm v0.6.1">
   <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-green" alt="MIT lisansı"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/ba%C4%9F%C4%B1ml%C4%B1l%C4%B1k-yok-brightgreen" alt="bağımlılık yok">
@@ -45,12 +45,12 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 - 👥 **Roller:** Manager (sorular, kayıtlar), Designer (model, çıktılar) ve
   iki bağımsız reviewer — **fonksiyon** (dayanım, geçmeler, girişim,
   hareket boşluğu) ve **DFM** (üretilebilir ve monte edilebilir mi).
-  Her şey **tek oturumda** yürür; yapay zeka içinde alt ajan kullanabilir,
-  ama kendi başına yeni sohbet açmaz. Bkz. [ROLES.md](ROLES.md).
+  Her şey **tek oturumda** yürür; review'lar oturum içinde alt ajan olarak
+  çalışabilir, ama yapay zeka kendi başına yeni sohbet açmaz. Bkz. [ROLES.md](ROLES.md).
 - 🚦 **Üç kapı, hepsini siz onaylarsınız:** G0 gereksinimler → G1 tasarım →
   RELEASE üretim dosyaları.
 - 📏 **Kimlikli kısa kurallar** [rules/](rules/README.md) altında: malzeme (MAT),
-  tolerans (TOL), DFM, çizim (DWG), adlandırma (REV).
+  tolerans (TOL), DFM, çizim (DWG), adlandırma (REV), CAD erişimi (CAD).
 - 🌳 **Parça listesi / ürün ağacı:** `project/bom.csv`; `cadctl.py bom` kontrol
   eder ve ağacı çizer (bkz. [örnek](examples/MB001-wall-bracket/README.md)).
 - 🗂️ **Git isteğe bağlı:** Lokal bir klasör olarak bir AI istemcisiyle
@@ -92,19 +92,18 @@ flowchart TD
 
 ### 👥 Tek oturum, çok rol
 
-Bütün proje **tek sohbette/oturumda** kalır. Sizinle Manager konuşur;
-Designer ve reviewer işleri aynı oturumun içindeki alt ajanlara verilebilir
-(`ROL-09`). Alt ajan yoksa yapay zeka rolleri sırayla kendisi oynar.
+Bütün proje **tek sohbette/oturumda** kalır. Sizinle Manager konuşur ve
+Designer işini de o yapar. Sadece review'lar aynı oturumdaki alt ajanlara
+verilir; böylece dosyalara temiz gözle bakarlar ve token harcaması düşük
+kalır (`ROL-09`). Alt ajan yoksa yapay zeka review'u ayrı bir adımda yapar.
 
 ```mermaid
 flowchart LR
-    U((Siz)) <--> M[Manager<br/>sorular, kayıtlar,<br/>onay ister]
+    U((Siz)) <--> M[Manager + Designer<br/>sorular, kayıtlar, model,<br/>onay ister]
     subgraph S[Tek oturum]
         M
-        M -- görev --> D[Designer<br/>model, çıktılar]
-        M -- sadece dosyalar --> RF[Reviewer: fonksiyon<br/>dayanım, geçme,<br/>girişim, hareket]
-        M -- sadece dosyalar --> RD[Reviewer: DFM<br/>üretilebilir, monte edilebilir]
-        D -- sonuç --> M
+        M -- sadece dosyalar --> RF[Alt ajan: fonksiyon review<br/>dayanım, geçme,<br/>girişim, hareket]
+        M -- sadece dosyalar --> RD[Alt ajan: DFM review<br/>üretilebilir, monte edilebilir]
         RF -- PASS / FAIL --> M
         RD -- PASS / FAIL --> M
     end
@@ -197,7 +196,7 @@ CAD programınızı söyledikten sonra yapay zeka ona bir MCP sunucusu üzerinde
 erişip erişemediğini kontrol eder. Erişemiyorsa programınız için bilinen MCP
 sunucularını gösterir ve kurmak mı yoksa adım adım tarifle devam etmek mi
 istediğinizi sorar.
-Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after-question-6).
+Liste ve ayrıntılar: [rules/06-cad-access.md](rules/06-cad-access.md).
 
 | CAD programı | Yapay zeka nasıl çalışır |
 | :--- | :--- |
@@ -211,7 +210,7 @@ Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after
 | :--- | :--- |
 | `AGENTS.md` | Yapay zeka için talimat: ne okur, ne sorar |
 | `ROLES.md` | Roller, kapılar, prototip → üretim akışı |
-| `rules/` | Kural dosyaları |
+| `rules/` | Kural dosyaları, sadece gereken adımda açılır |
 | `project/` | Sizin projeniz: `requirements.md`, `workflow-state.json`, `bom.csv`, `cad/` (isteğe bağlı model betikleri), `release/` |
 | `examples/MB001-wall-bracket/` | Doldurulmuş örnek |
 | `scripts/cadctl.py` | Durum, sıradaki adım, kapı kontrolü |

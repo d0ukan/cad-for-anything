@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/version-v0.6.0-1d4f7a" alt="version v0.6.0">
+  <img src="https://img.shields.io/badge/version-v0.6.1-1d4f7a" alt="version v0.6.1">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen" alt="no dependencies">
@@ -43,12 +43,12 @@ on **Windows, macOS and Linux**.
 - 👥 **Roles:** Manager (questions, records), Designer (model, exports) and
   two independent reviewers — **function** (strength, fits, interference,
   motion clearance) and **DFM** (can it be made and assembled).
-  Everything runs in **one session**; the AI may use sub-agents inside it,
-  but never opens a new chat by itself. See [ROLES.md](ROLES.md).
+  Everything runs in **one session**; reviews may run as sub-agents inside
+  it, but the AI never opens a new chat by itself. See [ROLES.md](ROLES.md).
 - 🚦 **Three gates, all approved by you:** G0 requirements → G1 design →
   RELEASE manufacturing files.
 - 📏 **Short rules with IDs** in [rules/](rules/README.md): material (MAT),
-  tolerances (TOL), DFM, drawings (DWG), naming (REV).
+  tolerances (TOL), DFM, drawings (DWG), naming (REV), CAD access (CAD).
 - 🌳 **Parts list / product tree:** `project/bom.csv`, checked and drawn by
   `cadctl.py bom` (see the [example](examples/MB001-wall-bracket/README.md)).
 - 🗂️ **Git optional:** works as a plain local folder with an AI client
@@ -90,19 +90,18 @@ flowchart TD
 
 ### 👥 One session, many roles
 
-The whole project stays in **one chat/session**. The Manager talks to you;
-Designer and reviewer work can go to sub-agents inside the same session
-(`ROL-09`). Without sub-agents the AI plays the roles one after another.
+The whole project stays in **one chat/session**. The Manager talks to you
+and also does the Designer work. Only the reviews go to sub-agents inside the
+same session, so they judge the files with a fresh view; this keeps token
+use low (`ROL-09`). Without sub-agents the AI reviews as a separate step.
 
 ```mermaid
 flowchart LR
-    U((You)) <--> M[Manager<br/>questions, records,<br/>asks for approvals]
+    U((You)) <--> M[Manager + Designer<br/>questions, records, model,<br/>asks for approvals]
     subgraph S[One session]
         M
-        M -- task --> D[Designer<br/>model, exports]
-        M -- files only --> RF[Reviewer: function<br/>strength, fits,<br/>interference, motion]
-        M -- files only --> RD[Reviewer: DFM<br/>makeable, assemblable]
-        D -- result --> M
+        M -- files only --> RF[Sub-agent: function review<br/>strength, fits,<br/>interference, motion]
+        M -- files only --> RD[Sub-agent: DFM review<br/>makeable, assemblable]
         RF -- PASS / FAIL --> M
         RD -- PASS / FAIL --> M
     end
@@ -193,7 +192,7 @@ flowchart TD
 After you name your CAD program, the AI checks whether it can reach it
 through an MCP server. If not, it shows you known MCP servers for your program
 and asks whether to set one up or continue with step-by-step instructions.
-List and details: [AGENTS.md, section 5](AGENTS.md#5-cad-access-check-after-question-6).
+List and details: [rules/06-cad-access.md](rules/06-cad-access.md).
 
 | CAD program | How the AI works with it |
 | :--- | :--- |
@@ -207,7 +206,7 @@ List and details: [AGENTS.md, section 5](AGENTS.md#5-cad-access-check-after-ques
 | :--- | :--- |
 | `AGENTS.md` | Instructions for the AI: what to read, what to ask |
 | `ROLES.md` | Roles, gates, prototype → production flow |
-| `rules/` | Rule files |
+| `rules/` | Rule files, opened only at the step that needs them |
 | `project/` | Your project: `requirements.md`, `workflow-state.json`, `bom.csv`, `cad/` (optional model scripts), `release/` |
 | `examples/MB001-wall-bracket/` | Filled example |
 | `scripts/cadctl.py` | State, next step, gate checks |

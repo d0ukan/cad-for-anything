@@ -3,7 +3,7 @@
 > AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Roles: Manager, Designer, two independent Reviewers (function, DFM). User approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, CAD access check (MCP server, code such as CadQuery, OpenSCAD or JSCAD, or step-by-step instructions), BOM / product tree, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py) that runs on Windows, macOS and Linux. Start with AGENTS.md; do not read every rule file.
 
 ## Start here
-- [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order, CAD/MCP access check and known MCP servers.
+- [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order.
 - [ROLES.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/ROLES.md): Roles, gates and the prototype → production flow.
 - [rules/README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/README.md): Rule index and when to open each file.
 - Run `python scripts/cadctl.py next` (or ask the user to run it) to get the next step.
@@ -14,6 +14,7 @@
 - [rules/03-dfm.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/03-dfm.md): Design for FDM, SLA/SLS, CNC, sheet metal (DFM).
 - [rules/04-drawings-delivery.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/04-drawings-delivery.md): STEP, STL, PDF drawing, DXF delivery (DWG).
 - [rules/05-naming-revision.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/05-naming-revision.md): File names and revisions (REV).
+- [rules/06-cad-access.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/06-cad-access.md): CAD access check, known MCP servers (CAD).
 
 ## Optional
 - [examples/MB001-wall-bracket/README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/examples/MB001-wall-bracket/README.md): Small filled example.

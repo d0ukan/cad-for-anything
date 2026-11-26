@@ -346,7 +346,7 @@ class TestDocs(unittest.TestCase):
         files = [ROOT / "AGENTS.md", ROOT / "ROLES.md", ROOT / "scripts" / "cadctl.py"]
         files += list((ROOT / "rules").glob("*.md"))
         for f in files:
-            for rid in re.findall(r"\b((?:MAT|TOL|DFM|DWG|REV|AI|ROL)-\d{2})\b", f.read_text(encoding="utf-8")):
+            for rid in re.findall(r"\b((?:MAT|TOL|DFM|DWG|REV|AI|ROL|CAD)-\d{2})\b", f.read_text(encoding="utf-8")):
                 self.assertIn(rid, defined, f"{rid} cited in {f.name}")
 
 
