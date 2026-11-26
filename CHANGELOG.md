@@ -8,6 +8,7 @@
 - Known MCP servers listed for Fusion, Inventor, SolidWorks, CATIA V5,
   Onshape, FreeCAD (not tested by this repo).
 - `project/cad/` for model scripts.
+- README: workflow flowchart (Mermaid).
 
 ## v0.2.0 — 2026-11-25
 

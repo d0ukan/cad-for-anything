@@ -30,9 +30,31 @@ CNC and sheet metal — together with **any AI assistant** and **any CAD program
 - **Short rules with IDs** in [rules/](rules/README.md): material (MAT),
   tolerances (TOL), DFM, drawings (DWG), naming (REV).
 
-```
-[FDM prototype P01..] --test OK--> [production R01..]
-   each revision:  G0 -> design -> 2 reviews -> G1 -> export -> review -> RELEASE
+### Workflow
+
+```mermaid
+flowchart TD
+    A([Start: give the repo link to an AI]) --> B{FDM prototype first?}
+    B -- yes --> P[Prototype phase<br/>P01, FDM-printable]
+    B -- no --> R[Production phase<br/>R01, final process]
+    P --> Q
+    R --> Q
+    Q[Questions: part, code, material,<br/>units, CAD program] --> C{CAD reachable<br/>via MCP or code?}
+    C -- yes --> C1[AI models directly]
+    C -- no --> C2[AI gives step-by-step<br/>CAD instructions]
+    C1 --> G0
+    C2 --> G0
+    G0{{G0: user approves requirements}} --> D[Design]
+    D --> RV[Two independent reviews<br/>function + DFM]
+    RV -- FAIL --> D
+    RV -- PASS --> G1{{G1: user approves design}}
+    G1 --> E[Export STEP / STL / PDF / DXF<br/>+ release review]
+    E --> REL{{RELEASE: user approves files}}
+    REL --> T{Prototype?}
+    T -- no --> DONE([Send to manufacturing])
+    T -- yes --> PT{Print and test OK?}
+    PT -- "no: bump P02" --> D
+    PT -- "yes: promote R01" --> G0
 ```
 
 ## The helper tool

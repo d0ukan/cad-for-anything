@@ -32,9 +32,31 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 - **Kimlikli kısa kurallar** [rules/](rules/README.md) altında: malzeme (MAT),
   tolerans (TOL), DFM, çizim (DWG), adlandırma (REV).
 
-```
-[FDM prototip P01..] --test OK--> [üretim R01..]
-   her revizyon:  G0 -> tasarım -> 2 review -> G1 -> export -> review -> RELEASE
+### İş akışı
+
+```mermaid
+flowchart TD
+    A([Başla: repo linkini bir yapay zekaya ver]) --> B{Önce FDM prototip?}
+    B -- evet --> P[Prototip aşaması<br/>P01, FDM'e uygun]
+    B -- hayır --> R[Üretim aşaması<br/>R01, son yöntem]
+    P --> Q
+    R --> Q
+    Q[Sorular: parça, kod, malzeme,<br/>birim, CAD programı] --> C{CAD'e MCP veya<br/>kodla erişim var mı?}
+    C -- evet --> C1[Yapay zeka modeli çizer]
+    C -- hayır --> C2[Yapay zeka adım adım<br/>CAD tarifi verir]
+    C1 --> G0
+    C2 --> G0
+    G0{{G0: kullanıcı gereksinimleri onaylar}} --> D[Tasarım]
+    D --> RV[İki bağımsız review<br/>fonksiyon + DFM]
+    RV -- FAIL --> D
+    RV -- PASS --> G1{{G1: kullanıcı tasarımı onaylar}}
+    G1 --> E[STEP / STL / PDF / DXF çıkar<br/>+ dosya review]
+    E --> REL{{RELEASE: kullanıcı dosyaları onaylar}}
+    REL --> T{Prototip mi?}
+    T -- hayır --> DONE([Üretime gönder])
+    T -- evet --> PT{Bas ve test et: OK?}
+    PT -- "hayır: bump P02" --> D
+    PT -- "evet: promote R01" --> G0
 ```
 
 ## Yardımcı araç
