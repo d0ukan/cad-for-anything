@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.1 — 2026-11-26
+
+- AGENTS.md: Git is optional; the AI never commits or pushes unless the
+  user asks. READMEs: ZIP download, works as a plain local folder.
+- CI: macOS installs `openscad@snapshot` (Homebrew disabled the stable
+  cask); `actions/checkout@v5`, `actions/setup-python@v6`.
+
 ## v0.5.0 — 2026-11-26
 
 - Example: the bracket model also in OpenSCAD (`cad/mb001_bracket.scad`).

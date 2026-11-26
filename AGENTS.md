@@ -62,6 +62,8 @@ Then show the filled requirements and ask the user for **G0** approval.
   as its own sub-agent (or step) that sees only the files and requirements,
   not the Designer's reasoning or the other review. Interference, motion
   clearance and assembly access are always checked (ROL-08).
+- **Git is optional.** The project works as a plain folder (ZIP download)
+  with an AI client or a terminal. Never commit or push unless the user asks.
 - Never record an approval the user did not give. Never show a check as passed
   if it was not run. Use `cadctl.py`, do not edit the JSON by hand.
 - No CAD access (web chat): give the user step-by-step CAD instructions

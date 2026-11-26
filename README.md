@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/version-v0.5.0-1d4f7a" alt="version v0.5.0">
+  <img src="https://img.shields.io/badge/version-v0.5.1-1d4f7a" alt="version v0.5.1">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen" alt="no dependencies">
@@ -27,7 +27,8 @@ on **Windows, macOS and Linux**.
 
 ## 🚀 Quick start
 
-1. Click **Use this template** to make your own copy.
+1. Click **Use this template** to make your own copy, or download the ZIP.
+   Git is not required.
 2. Give the repo link to any AI chat and say:
    *"I want to design a part with this."*
 3. The AI reads [AGENTS.md](AGENTS.md), asks a few questions in order, and
@@ -50,6 +51,9 @@ on **Windows, macOS and Linux**.
   tolerances (TOL), DFM, drawings (DWG), naming (REV).
 - 🌳 **Parts list / product tree:** `project/bom.csv`, checked and drawn by
   `cadctl.py bom` (see the [example](examples/MB001-wall-bracket/README.md)).
+- 🗂️ **Git optional:** works as a plain local folder with an AI client
+  (Claude Code, Cursor, Codex …) or a terminal + web chat. The AI never
+  commits or pushes unless you ask.
 - 🔒 **Released files are locked:** hashes are stored at RELEASE; any later
   change is reported and needs a new revision.
 

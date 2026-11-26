@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.5.0-1d4f7a" alt="sürüm v0.5.0">
+  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.5.1-1d4f7a" alt="sürüm v0.5.1">
   <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-green" alt="MIT lisansı"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/ba%C4%9F%C4%B1ml%C4%B1l%C4%B1k-yok-brightgreen" alt="bağımlılık yok">
@@ -29,7 +29,8 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 
 ## 🚀 Hızlı başlangıç
 
-1. **Use this template** ile kendi kopyanızı oluşturun.
+1. **Use this template** ile kendi kopyanızı oluşturun ya da ZIP indirin.
+   Git gerekmez.
 2. Repo linkini herhangi bir yapay zeka sohbetine verin ve
    *"Bununla bir parça tasarlamak istiyorum"* deyin.
 3. Yapay zeka [AGENTS.md](AGENTS.md) dosyasını okur, soruları sırayla sorar
@@ -52,6 +53,9 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
   tolerans (TOL), DFM, çizim (DWG), adlandırma (REV).
 - 🌳 **Parça listesi / ürün ağacı:** `project/bom.csv`; `cadctl.py bom` kontrol
   eder ve ağacı çizer (bkz. [örnek](examples/MB001-wall-bracket/README.md)).
+- 🗂️ **Git isteğe bağlı:** Lokal bir klasör olarak bir AI istemcisiyle
+  (Claude Code, Cursor, Codex …) ya da terminal + web sohbetiyle çalışır.
+  Yapay zeka siz istemeden commit veya push yapmaz.
 - 🔒 **Onaylanan dosyalar kilitli:** RELEASE anında dosya özetleri (hash)
   saklanır; sonradan değişiklik yakalanır ve yeni revizyon gerekir.
 

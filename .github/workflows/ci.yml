@@ -17,8 +17,8 @@ jobs:
         python: ["3.10", "3.12"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Unit tests
@@ -41,7 +41,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install OpenSCAD (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -56,7 +56,7 @@ jobs:
       - name: Install OpenSCAD (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install --cask openscad
+          brew install --cask openscad@snapshot  # stable cask disabled by Homebrew (2026-09)
           echo "SCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD" >> "$GITHUB_ENV"
       - name: Build example STL
         shell: bash
@@ -67,7 +67,7 @@ jobs:
   links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: lycheeverse/lychee-action@v2
         with:
           # raw.githubusercontent links in llms.txt are checked by the unit tests
