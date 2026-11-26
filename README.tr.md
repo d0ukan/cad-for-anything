@@ -8,16 +8,18 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.4.1-1d4f7a" alt="sürüm v0.4.1">
+  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.5.0-1d4f7a" alt="sürüm v0.5.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-green" alt="MIT lisansı"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/ba%C4%9F%C4%B1ml%C4%B1l%C4%B1k-yok-brightgreen" alt="bağımlılık yok">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-555" alt="Windows, macOS, Linux">
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/de%C4%9Fi%C5%9Fiklikler-oku-lightgrey" alt="değişiklikler"></a>
 </p>
 
 Mekanik parça ve montaj tasarımı (3D baskı, CNC, sac metal) için küçük bir
 şablon. **Herhangi bir yapay zeka** ve **herhangi bir CAD programı** ile
-çalışır (FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery …).
+çalışır (FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery,
+OpenSCAD …). **Windows, macOS ve Linux**'ta kullanılır.
 
 Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 
@@ -145,7 +147,7 @@ flowchart LR
 
 ## 🛠️ Yardımcı araç
 
-Bağımlılık yok, Python 3.10+.
+Bağımlılık yok, Python 3.10+. Windows, macOS ve Linux'ta test edilir.
 
 ```
 python scripts/cadctl.py next      # şimdi ne yapılacak, kim yapacak, hangi komut
@@ -196,7 +198,7 @@ Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after
 | CAD programı | Yapay zeka nasıl çalışır |
 | :--- | :--- |
 | Fusion · Inventor · SolidWorks · CATIA · Onshape · FreeCAD | 🔌 Bağlıysa MCP sunucusu, değilse 📝 adım adım tarif |
-| CadQuery (kod) | 🐍 Yapay zeka `project/cad/` içine betik yazar ve çalıştırır |
+| CadQuery · OpenSCAD (kod) | 🐍 Yapay zeka `project/cad/` içine betik yazar ve çalıştırır (örnek: [`.py`](examples/MB001-wall-bracket/cad/mb001_bracket.py), [`.scad`](examples/MB001-wall-bracket/cad/mb001_bracket.scad)) |
 | Diğerleri | 📝 Adım adım tarif; siz ekran görüntüsü veya dosya gönderirsiniz |
 
 ## 📁 Dosyalar

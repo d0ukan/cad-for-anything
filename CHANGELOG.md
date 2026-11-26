@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.0 — 2026-11-26
+
+- Example: the bracket model also in OpenSCAD (`cad/mb001_bracket.scad`).
+- AGENTS.md: OpenSCAD listed as code-based CAD (no MCP needed).
+- CI: tests on Windows, macOS and Linux; the OpenSCAD model is built on all three.
+- READMEs: platform badge, OpenSCAD in the CAD table.
+
 ## v0.4.1 — 2026-11-26
 
 - ROL-09: one session per project. The AI never opens a new chat or

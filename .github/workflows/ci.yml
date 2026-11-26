@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python: ["3.10", "3.12"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -32,6 +32,37 @@ jobs:
           python scripts/cadctl.py $S check
           python scripts/cadctl.py $S bom | grep -q "MB001-01"
           python scripts/cadctl.py $S next | grep -q "G1"
+
+  openscad:
+    # The OpenSCAD example model must build on all three systems.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OpenSCAD (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt-get install -y openscad
+          echo "SCAD=openscad" >> "$GITHUB_ENV"
+      - name: Install OpenSCAD (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          choco install openscad -y --no-progress
+          echo "SCAD=/c/Program Files/OpenSCAD/openscad.com" >> "$GITHUB_ENV"
+      - name: Install OpenSCAD (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask openscad
+          echo "SCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD" >> "$GITHUB_ENV"
+      - name: Build example STL
+        shell: bash
+        run: |
+          "$SCAD" -o MB001-R01.stl examples/MB001-wall-bracket/cad/mb001_bracket.scad
+          test -s MB001-R01.stl
 
   links:
     runs-on: ubuntu-latest

@@ -9,7 +9,8 @@ A shelf bracket that went through two FDM prototypes and then moved to
 | [review.md](review.md) | Function and DFM reviewer findings in `F-001` format with rule IDs |
 | [workflow-state.json](workflow-state.json) | State: production R01, G0 and both design reviews done, G1 waiting |
 | [bom.csv](bom.csv) | Parts list / product tree |
-| [cad/mb001_bracket.py](cad/mb001_bracket.py) | Simplified CadQuery model of R01 (optional; needs `pip install cadquery`) |
+| [cad/mb001_bracket.py](cad/mb001_bracket.py) | Simplified CadQuery model of R01 (optional; needs `pip install cadquery`; writes STEP) |
+| [cad/mb001_bracket.scad](cad/mb001_bracket.scad) | The same model in OpenSCAD (optional; `openscad -o MB001-R01.stl mb001_bracket.scad`) |
 
 Product tree (`cadctl.py bom --mermaid`):
 

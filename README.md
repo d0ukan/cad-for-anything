@@ -8,16 +8,18 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/version-v0.4.1-1d4f7a" alt="version v0.4.1">
+  <img src="https://img.shields.io/badge/version-v0.5.0-1d4f7a" alt="version v0.5.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen" alt="no dependencies">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-555" alt="Windows, macOS, Linux">
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/changelog-read-lightgrey" alt="changelog"></a>
 </p>
 
 A small template for designing mechanical parts and assemblies — 3D printing,
 CNC and sheet metal — together with **any AI assistant** and **any CAD program**
-(FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery …).
+(FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery, OpenSCAD …)
+on **Windows, macOS and Linux**.
 
 | 💬 Ask | 📐 Design | 🔍 Review | 📦 Release |
 | :---: | :---: | :---: | :---: |
@@ -143,7 +145,7 @@ flowchart LR
 
 ## 🛠️ The helper tool
 
-No dependencies, Python 3.10+.
+No dependencies, Python 3.10+. Tested on Windows, macOS and Linux.
 
 ```
 python scripts/cadctl.py next      # what to do now, who does it, which command
@@ -192,7 +194,7 @@ List and details: [AGENTS.md, section 5](AGENTS.md#5-cad-access-check-after-ques
 | CAD program | How the AI works with it |
 | :--- | :--- |
 | Fusion · Inventor · SolidWorks · CATIA · Onshape · FreeCAD | 🔌 MCP server if connected, otherwise 📝 step-by-step instructions |
-| CadQuery (code) | 🐍 The AI writes and runs a script in `project/cad/` |
+| CadQuery · OpenSCAD (code) | 🐍 The AI writes and runs a script in `project/cad/` (example: [`.py`](examples/MB001-wall-bracket/cad/mb001_bracket.py), [`.scad`](examples/MB001-wall-bracket/cad/mb001_bracket.scad)) |
 | Anything else | 📝 Step-by-step instructions; you send screenshots or files back |
 
 ## 📁 Files
