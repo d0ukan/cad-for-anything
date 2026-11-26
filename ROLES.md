@@ -1,7 +1,8 @@
 # Roles and gates
 
-Roles are not models or products. One AI can play all roles in separate
-steps, or you can use separate chats/agents. The **user** has the final say.
+Roles are not models or products. Everything runs in one session: the
+Manager plays the other roles itself, step by step, or gives them to
+sub-agents inside the same session (ROL-09). The **user** has the final say.
 
 | Role | Does | May change design files? |
 | :--- | :--- | :---: |
@@ -47,8 +48,9 @@ Without a prototype, the project starts directly in the production phase.
   and removed with `unblock` only after the fix is reviewed.
 - **ROL-05** — Evidence for each approval/review is something real: a file
   name, a commit, a chat message date, a photo of the test.
-- **ROL-06** — Two design reviewers, each in a separate session/chat and
-  without seeing the other's report: **function** (`review function`) and
+- **ROL-06** — Two design reviewers, each as a separate sub-agent or step,
+  seeing only the files and requirements, not the Designer's reasoning or
+  the other's report: **function** (`review function`) and
   **DFM** (`review dfm`). Production phase needs both PASS. Prototype phase
   needs at least one (the print test is the second check). Any FAIL blocks G1.
   The release review (`review release`) is done by one reviewer.
@@ -61,3 +63,7 @@ Without a prototype, the project starts directly in the production phase.
   DFM-06 wrong-way assembly. Each report lists these checks with result or
   "n/a + reason". Without CAD access the reviewer asks the user to run the
   CAD interference check and send the result; no PASS before it arrives.
+- **ROL-09** — One session per project. The AI never opens a new chat,
+  session or window by itself. Sub-agents inside the session are allowed
+  for Designer and Reviewer work; the Manager stays in the main session,
+  records results with `cadctl.py` and asks the user for every approval.

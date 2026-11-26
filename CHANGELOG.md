@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.1 — 2026-11-26
+
+- ROL-09: one session per project. The AI never opens a new chat or
+  session by itself; sub-agents inside the session may do Designer and
+  Reviewer work. AGENTS.md, ROLES.md (ROL-06) and READMEs updated.
+- README (EN + TR): banner, badges, diagrams for roles in one session,
+  a sample session, revisions and the product tree; sample tool output.
+
 ## v0.4.0 — 2026-11-26
 
 **Fixes**

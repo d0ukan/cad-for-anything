@@ -52,12 +52,16 @@ Then show the filled requirements and ask the user for **G0** approval.
 
 - Default role is **Manager**. Act as Designer or Reviewer only when assigned
   (see ROLES.md). The user always gives the final approval.
-- Design review has two reviewers: **function** and **DFM** (ROL-06). Run
-  each in a new chat/session that sees only the files and requirements.
-  Interference, motion clearance and assembly access are always checked
-  (ROL-08).
-  With one chat, do them one after another and do not reuse the Designer's
-  reasoning.
+- **One session.** The whole project runs in this one chat/session. Never
+  open a new chat, session or window yourself (ROL-09).
+- **Sub-agents.** If your tool can start sub-agents inside this session, use
+  them for Designer and Reviewer work. Give each one only the files,
+  `requirements.md` and its role; you (Manager) collect the results here.
+  No sub-agents → play the roles one after another yourself.
+- Design review has two reviewers: **function** and **DFM** (ROL-06), each
+  as its own sub-agent (or step) that sees only the files and requirements,
+  not the Designer's reasoning or the other review. Interference, motion
+  clearance and assembly access are always checked (ROL-08).
 - Never record an approval the user did not give. Never show a check as passed
   if it was not run. Use `cadctl.py`, do not edit the JSON by hand.
 - No CAD access (web chat): give the user step-by-step CAD instructions
