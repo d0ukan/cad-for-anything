@@ -13,11 +13,14 @@ Commands:
   block ID / unblock ID       Add/remove a blocking issue (e.g. F-001)
   bump                        Next revision (P01 -> P02); approvals reset
   promote --evidence TEXT     Prototype passed: move to production, R01
+  bom [--mermaid]             Check bom.csv and print the product tree
 
 No third-party dependencies. Python 3.10+.
 """
 import argparse
+import csv
 import datetime
+import hashlib
 import json
 import re
 import sys
@@ -46,6 +49,10 @@ DEFAULT_DELIVERABLES = {
 }
 REV_RE = {"prototype": re.compile(r"^P\d{2}$"), "production": re.compile(r"^R\d{2}$")}
 CODE_RE = re.compile(r"^[A-Za-z0-9_]+$")
+# Changing one of these after G0 means the requirements changed: approvals reset.
+REQUIREMENT_FIELDS = ("phase", "units", "tolerance_standard", "process", "target_process", "material")
+BOM_COLUMNS = ("part_number", "name", "qty", "parent", "type", "material_spec", "process", "notes")
+BOM_TYPES = ("assembly", "make", "buy")
 
 
 class StateError(Exception):
@@ -175,6 +182,34 @@ def release_file_errors(state, release_root):
     return errors
 
 
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def release_hashes(state, release_root):
+    folder = release_dir(state, release_root)
+    return {f.name: sha256(f) for f in sorted(folder.iterdir())
+            if f.is_file() and f.name.upper() != ".GITKEEP"}
+
+
+def released_changes(state, release_root):
+    """Files changed after RELEASE approval (REV-04). Empty if not released."""
+    rec = state["gates"]["RELEASE"]
+    if not ok(rec, "APPROVED", state.get("revision")) or "files" not in rec:
+        return []
+    if not release_dir(state, release_root).is_dir():
+        return ["release folder deleted after RELEASE"]
+    now, then = release_hashes(state, release_root), rec["files"]
+    changes = [f"changed after RELEASE: {n}" for n in then if n in now and now[n] != then[n]]
+    changes += [f"deleted after RELEASE: {n}" for n in then if n not in now]
+    changes += [f"added after RELEASE: {n}" for n in now if n not in then]
+    return changes
+
+
 def design_review_missing(state):
     """Production needs both function and dfm PASS; prototype needs at least one.
     A FAIL on the current revision always blocks."""
@@ -235,8 +270,12 @@ def next_step(state, release_root):
         return ("Reviewer", "Review release files", 'cadctl.py review release PASS --evidence "<...>"')
     if not ok(g["RELEASE"], "APPROVED", rev):
         return ("User", f"Approve release of {rev}", 'cadctl.py approve RELEASE --evidence "<...>"')
+    changes = released_changes(state, release_root)
+    if changes:
+        return ("Manager", "Released files changed (REV-04): " + "; ".join(changes),
+                "cadctl.py bump   # make a new revision instead")
     if state["phase"] == "prototype":
-        return ("User", f"Print and test {rev}. Failed: bump. OK: promote.",
+        return ("User", f"Print and test {rev} against the test plan. Failed: bump. OK: promote.",
                 'cadctl.py promote --evidence "<test result>"   # or: cadctl.py bump')
     return ("-", f"{rev} released. Nothing missing.", "cadctl.py bump   # for the next change")
 
@@ -249,7 +288,14 @@ def set_field(state, field, value):
         return
     if field not in CHOICES and field not in TEXT_FIELDS:
         raise StateError(f"unknown field {field!r}")
-    state[field] = value or None
+    value = value or None
+    warning = None
+    if (field in REQUIREMENT_FIELDS and state.get(field) != value
+            and ok(state["gates"]["G0"], "APPROVED", state.get("revision"))):
+        reset_approvals(state)
+        warning = f"{field} changed after G0: approvals and reviews reset, get G0 again"
+    state[field] = value
+    return warning
 
 
 def gate_errors(state, gate, release_root):
@@ -286,6 +332,8 @@ def approve(state, gate, evidence, by, release_root):
     if errors:
         raise StateError(f"cannot approve {gate}:\n  " + "\n  ".join(errors))
     record(state["gates"][gate], "APPROVED", state["revision"], evidence, by or "user")
+    if gate == "RELEASE":
+        state["gates"][gate]["files"] = release_hashes(state, release_root)
 
 
 def review(state, kind, status, evidence, by):
@@ -327,8 +375,123 @@ def promote(state, evidence, release_root):
     state["phase"] = "production"
     state["revision"] = "R01"
     state["process"] = state.get("target_process")
+    state["material"] = None  # prototype material is not the final one (MAT-07)
     state["deliverables"] = []
     reset_approvals(state)
+
+
+# ---------- BOM / product tree ----------
+
+def read_bom(path):
+    """Return rows of bom.csv, or [] if the file is missing or has no rows."""
+    path = Path(path)
+    if not path.is_file():
+        return []
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            header = [h.strip() for h in (reader.fieldnames or [])]
+            missing = [c for c in BOM_COLUMNS[:5] if c not in header]
+            if missing:
+                raise StateError(f"{path.name}: missing columns {', '.join(missing)}")
+            rows = []
+            for line, row in enumerate(reader, start=2):
+                row = {(k or "").strip(): (v or "").strip() for k, v in row.items()
+                       if not isinstance(v, list)}
+                if any(row.values()):
+                    row["_line"] = line
+                    rows.append(row)
+            return rows
+    except UnicodeDecodeError:
+        raise StateError(f"{path.name}: save it as UTF-8")
+
+
+def bom_errors(rows, code=None):
+    errors, parts = [], {}
+    for row in rows:
+        where = f"line {row['_line']}"
+        pn = row.get("part_number", "")
+        if not pn:
+            errors.append(f"{where}: part_number empty")
+            continue
+        if pn in parts:
+            errors.append(f"{where}: duplicate part_number {pn}")
+        parts[pn] = row
+        if row.get("type") not in BOM_TYPES:
+            errors.append(f"{where}: type must be one of {', '.join(BOM_TYPES)}")
+        if not re.match(r"^[1-9]\d*$", row.get("qty", "")):
+            errors.append(f"{where}: qty must be a whole number > 0")
+        if row.get("type") == "make" and not (row.get("material_spec") and row.get("process")):
+            errors.append(f"{where}: make part {pn} needs material_spec and process (MAT-05)")
+        if (code and row.get("type") in ("assembly", "make")
+                and not re.match(rf"^{re.escape(code)}-\d{{2}}$", pn)):
+            errors.append(f"{where}: {pn} should be {code}-NN (REV-03)")
+    if errors:
+        return errors
+    roots = [pn for pn, row in parts.items() if not row.get("parent")]
+    if parts and len(roots) != 1:
+        errors.append(f"need exactly one top item without parent (found {len(roots)})")
+    for pn, row in parts.items():
+        parent = row.get("parent")
+        if parent and parent not in parts:
+            errors.append(f"line {row['_line']}: parent {parent} not found")
+        elif parent and parts[parent].get("type") != "assembly":
+            errors.append(f"line {row['_line']}: parent {parent} is not an assembly")
+        seen, cur = set(), pn
+        while cur in parts and parts[cur].get("parent"):
+            if cur in seen:
+                errors.append(f"cycle in parents at {pn}")
+                break
+            seen.add(cur)
+            cur = parts[cur]["parent"]
+    return errors
+
+
+def bom_tree(rows):
+    """Text tree (ASCII) plus total quantities of buy parts."""
+    children = {}
+    for row in rows:
+        children.setdefault(row.get("parent", ""), []).append(row)
+    lines, totals = [], {}
+
+    def label(row):
+        extra = ", ".join(x for x in (row.get("material_spec"), row.get("process")) if x)
+        return f"{row['part_number']}  {row['name']}  [{row['type']}{': ' + extra if extra else ''}]"
+
+    def walk(row, prefix, last, mult):
+        qty = int(row["qty"])
+        total = qty * mult
+        if row["type"] == "buy":
+            totals[row["part_number"]] = totals.get(row["part_number"], 0) + total
+        lines.append(f"{prefix}{'`-- ' if last else '|-- '}{qty} x {label(row)}")
+        kids = children.get(row["part_number"], [])
+        for i, kid in enumerate(kids):
+            walk(kid, prefix + ("    " if last else "|   "), i == len(kids) - 1, total)
+
+    for root in children.get("", []):
+        lines.append(label(root))
+        kids = children.get(root["part_number"], [])
+        for i, kid in enumerate(kids):
+            walk(kid, "", i == len(kids) - 1, int(root["qty"]))
+    if totals:
+        lines += ["", "Buy list (total qty):"]
+        lines += [f"  {n:>4} x {pn}" for pn, n in totals.items()]
+    return "\n".join(lines)
+
+
+def bom_mermaid(rows):
+    """Mermaid flowchart of the product tree, for README or review."""
+    ids = {row["part_number"]: f"n{i}" for i, row in enumerate(rows)}
+    shape = {"assembly": ("[[", "]]"), "make": ("[", "]"), "buy": ("([", "])")}
+    out = ["flowchart TD"]
+    for row in rows:
+        a, b = shape.get(row["type"], ("[", "]"))
+        text = f"{row['part_number']}<br/>{row['name']}".replace('"', "'")
+        out.append(f'    {ids[row["part_number"]]}{a}"{text}"{b}')
+    for row in rows:
+        if row.get("parent") in ids:
+            out.append(f'    {ids[row["parent"]]} -- "{row["qty"]}x" --> {ids[row["part_number"]]}')
+    return "\n".join(out)
 
 
 # ---------- CLI ----------
@@ -368,10 +531,12 @@ def main(argv=None):
     p = sub.add_parser("block"); p.add_argument("id")
     p = sub.add_parser("unblock"); p.add_argument("id")
     p = sub.add_parser("promote"); p.add_argument("--evidence", required=True)
+    p = sub.add_parser("bom"); p.add_argument("--mermaid", action="store_true")
     args = parser.parse_args(argv)
 
     state_path = Path(args.state)
     release_root = Path(args.release_dir) if args.release_dir else state_path.parent / "release"
+    bom_path = state_path.parent / "bom.csv"
     try:
         state = load_state(state_path)
         changed = True
@@ -382,17 +547,31 @@ def main(argv=None):
             print(f"Next ({who}): {what}\n  python scripts/{cmd}"); changed = False
         elif args.cmd == "check":
             changed = False
-            problems = []
+            problems = bom_errors(read_bom(bom_path), state.get("project_code"))
             if state.get("project_code") and state.get("revision") and \
                     ok(state["gates"]["G1"], "APPROVED", state["revision"]):
-                problems = release_file_errors(state, release_root)
+                problems += release_file_errors(state, release_root)
+                problems += released_changes(state, release_root)
             if problems:
                 print("FAIL\n  " + "\n  ".join(problems)); return 1
             print("OK")
         elif args.cmd == "name":
             print(output_name(state, args.part)); changed = False
         elif args.cmd == "set":
-            set_field(state, args.field, args.value)
+            warning = set_field(state, args.field, args.value)
+            if warning:
+                print(f"WARNING: {warning}")
+        elif args.cmd == "bom":
+            changed = False
+            rows = read_bom(bom_path)
+            if not rows:
+                print(f"no parts in {bom_path.name} (single-part projects may skip the BOM)")
+                return 0
+            errors = bom_errors(rows, state.get("project_code"))
+            if errors:
+                print("FAIL\n  " + "\n  ".join(errors))
+                return 1
+            print(bom_mermaid(rows) if args.mermaid else bom_tree(rows))
         elif args.cmd == "approve":
             approve(state, args.gate, args.evidence, args.by, release_root)
         elif args.cmd == "revoke":
@@ -410,7 +589,7 @@ def main(argv=None):
             print(f"New revision: {bump(state)}")
         elif args.cmd == "promote":
             promote(state, args.evidence, release_root)
-            print("Promoted to production R01. Set target material if needed, then G0 again.")
+            print("Promoted to production R01. Set final process and material, then G0 again.")
         if changed:
             save_state(state_path, state)
             if args.cmd not in ("bump", "promote"):

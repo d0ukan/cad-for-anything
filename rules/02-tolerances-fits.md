@@ -23,3 +23,15 @@
   bend. Do not put tight tolerances across bends.
 - **TOL-08** — Check a tolerance stack when 3 or more parts line up; write the
   worst case in the review.
+
+## Interference and clearance (assemblies and mating parts)
+
+- **TOL-09** — Static interference: run the CAD interference/clash check on
+  the assembly (including purchased parts, screws and the part it mounts to).
+  Zero interference except intended press fits. The result (screenshot or
+  report) is review evidence; no PASS without it.
+- **TOL-10** — Motion clearance: for moving parts (hinge, slide, lid, cable),
+  check the full range of motion, not only the start and end. Write the
+  smallest gap; keep ≥ 0.5 mm (printed ≥ 1 mm) unless the requirements say otherwise.
+- **TOL-11** — Clearance at worst case: a gap that closes in the TOL-08 stack
+  or with heat expansion counts as interference.

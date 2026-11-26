@@ -45,11 +45,20 @@ Kept by the Manager. Approved at G0. Write "decide later" for open items.
 | :--- | :--- | :--- | :--- |
 | | | | |
 
-## Purchased parts
+## Parts and product tree
 
-| Part | Exact spec | Qty |
-| :--- | :--- | :--- |
-| | | |
+Single part: skip. Assembly or purchased parts (screws, inserts, bearings):
+fill `project/bom.csv` and show the tree with `cadctl.py bom`.
+
+## Prototype test plan
+
+Fill before G1 of a prototype revision. `promote` evidence = the result column.
+
+| Test | How | Pass if | Result |
+| :--- | :--- | :--- | :--- |
+| Fit | | | |
+| Function | | | |
+| Load (if any) | | | |
 
 ## Open decisions
 

@@ -6,9 +6,9 @@ steps, or you can use separate chats/agents. The **user** has the final say.
 | Role | Does | May change design files? |
 | :--- | :--- | :---: |
 | **Manager** | Asks questions, keeps `requirements.md` and `workflow-state.json`, asks for approvals | No |
-| **Designer** | Models the part (or guides the user in CAD), exports files | Yes |
-| **Reviewer – function** | Strength, fits, tolerances, requirements met? | No |
-| **Reviewer – DFM** | Can the chosen process make it? (`rules/03`) | No |
+| **Designer** | Models the part (or guides the user in CAD), keeps `bom.csv`, exports files | Yes |
+| **Reviewer – function** | Strength, fits, tolerances, interference and motion clearance, requirements met? | No |
+| **Reviewer – DFM** | Can the chosen process make it, and can it be assembled? (`rules/03`) | No |
 | **User** | Gives inputs, approves gates | Final authority |
 
 ## Gates
@@ -20,7 +20,8 @@ steps, or you can use separate chats/agents. The **user** has the final say.
 | **RELEASE** | Manufacturing files approved | G1, exported files in `project/release/<CODE>-<REV>/`, Reviewer `release PASS` |
 
 Every approval and review is tied to one revision. A new revision
-(`bump`, `promote`) needs new approvals.
+(`bump`, `promote`) needs new approvals. Changing a requirement field
+(process, material, units …) after G0 resets all approvals.
 
 ## Flow
 
@@ -54,3 +55,9 @@ Without a prototype, the project starts directly in the production phase.
 - **ROL-07** — Before asking for G1, the Manager does not re-review the
   design. It checks each line of `requirements.md` against the reviewer
   reports, lists anything not covered, and confirms the reviews are PASS.
+- **ROL-08** — Fixed review scope for anything with a mating part:
+  function reviewer — TOL-08 stack, TOL-09 interference, TOL-10 motion,
+  TOL-11 worst case; DFM reviewer — DFM-05 assembly access and order,
+  DFM-06 wrong-way assembly. Each report lists these checks with result or
+  "n/a + reason". Without CAD access the reviewer asks the user to run the
+  CAD interference check and send the result; no PASS before it arrives.

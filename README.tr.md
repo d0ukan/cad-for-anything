@@ -2,7 +2,7 @@
 
 [English](README.md) · **Türkçe**
 
-[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.3.0 ([değişiklikler](CHANGELOG.md))
+[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.4.0 ([değişiklikler](CHANGELOG.md))
 
 Mekanik parça ve montaj tasarımı (3D baskı, CNC, sac metal) için küçük bir
 şablon. **Herhangi bir yapay zeka** ve **herhangi bir CAD programı** ile
@@ -25,12 +25,17 @@ Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
   (`P01`, `P02` …). Baskı işe yarayınca proje gerçek malzeme ve yönteme
   geçer (`R01`).
 - **Roller:** Manager (sorular, kayıtlar), Designer (model, çıktılar) ve
-  iki bağımsız reviewer — **fonksiyon** (dayanım, geçmeler) ve **DFM**
-  (üretilebilir mi). Bkz. [ROLES.md](ROLES.md).
+  iki bağımsız reviewer — **fonksiyon** (dayanım, geçmeler, girişim,
+  hareket boşluğu) ve **DFM** (üretilebilir ve monte edilebilir mi).
+  Bkz. [ROLES.md](ROLES.md).
 - **Üç kapı, hepsini siz onaylarsınız:** G0 gereksinimler → G1 tasarım →
   RELEASE üretim dosyaları.
 - **Kimlikli kısa kurallar** [rules/](rules/README.md) altında: malzeme (MAT),
   tolerans (TOL), DFM, çizim (DWG), adlandırma (REV).
+- **Parça listesi / ürün ağacı:** `project/bom.csv`; `cadctl.py bom` kontrol
+  eder ve ağacı çizer (bkz. [örnek](examples/MB001-wall-bracket/README.md)).
+- **Onaylanan dosyalar kilitli:** RELEASE anında dosya özetleri (hash)
+  saklanır; sonradan değişiklik yakalanır ve yeni revizyon gerekir.
 
 ### İş akışı
 
@@ -67,6 +72,7 @@ Bağımlılık yok, Python 3.10+.
 python scripts/cadctl.py next      # şimdi ne yapılacak, kim yapacak, hangi komut
 python scripts/cadctl.py status    # proje durumu
 python scripts/cadctl.py check     # üretim dosyaları var ve doğru adlı mı?
+python scripts/cadctl.py bom       # project/bom.csv'den ürün ağacı (--mermaid ile şema)
 ```
 
 Diğer komutlar: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
@@ -87,7 +93,7 @@ Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after
 | `AGENTS.md` | Yapay zeka için talimat: ne okur, ne sorar |
 | `ROLES.md` | Roller, kapılar, prototip → üretim akışı |
 | `rules/` | Kural dosyaları |
-| `project/` | Sizin projeniz: `requirements.md`, `workflow-state.json`, `cad/` (isteğe bağlı model betikleri), `release/` |
+| `project/` | Sizin projeniz: `requirements.md`, `workflow-state.json`, `bom.csv`, `cad/` (isteğe bağlı model betikleri), `release/` |
 | `examples/MB001-wall-bracket/` | Doldurulmuş örnek |
 | `scripts/cadctl.py` | Durum, sıradaki adım, kapı kontrolü |
 

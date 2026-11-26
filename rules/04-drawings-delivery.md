@@ -22,6 +22,7 @@
 - **DWG-06** — Dimensions on the drawing must match the model. Do not
   dimension the same feature twice.
 - **DWG-07** — For assemblies: one STEP of the assembly plus one per part,
-  and a parts list (part number, name, qty, material or purchased part).
+  and the parts list from `project/bom.csv` (checked by `cadctl.py bom`),
+  copied into the release folder as `<CODE>-<REV>.csv`.
 - **DWG-08** — Add a short `NOTES.md` in the release folder if the supplier
   needs more: print orientation, infill, finish, quantity.

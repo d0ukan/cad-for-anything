@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.4.0 — 2026-11-26
+
+**Fixes**
+- Changing a requirement field (phase, units, tolerance standard, process,
+  target process, material) after G0 resets all approvals and reviews.
+- Files are hashed at RELEASE; `check` and `next` report later changes,
+  additions or deletions (REV-04).
+- `promote` clears the prototype material, so G0 asks for the final one.
+
+**New**
+- `project/bom.csv` and `cadctl.py bom`: parts list check, product tree,
+  buy-list totals, `--mermaid` diagram. `check` also validates the BOM.
+- Prototype test plan in `requirements.md`; MAT-08 (prototype keeps all
+  interfaces of the final part).
+- Example: `bom.csv`, filled test plan, simplified CadQuery model.
+- `CLAUDE.md`, `GEMINI.md` (point to AGENTS.md), `.gitattributes`;
+  `llms.txt` updated.
+- Interference and assembly checks: TOL-09 (static interference), TOL-10
+  (motion clearance), TOL-11 (worst-case gap), DFM-05 (assembly access and
+  order), DFM-06 (wrong-way assembly); ROL-08 fixes which reviewer checks
+  what, and no PASS without the CAD interference result.
+
 ## v0.3.0 — 2026-11-26
 
 - CAD access check (AGENTS.md section 5): after the user names the CAD

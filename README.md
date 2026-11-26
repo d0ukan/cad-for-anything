@@ -2,7 +2,7 @@
 
 **English** · [Türkçe](README.tr.md)
 
-[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · License: [MIT](LICENSE) · Version: v0.3.0 ([changelog](CHANGELOG.md))
+[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · License: [MIT](LICENSE) · Version: v0.4.0 ([changelog](CHANGELOG.md))
 
 A small template for designing mechanical parts and assemblies — 3D printing,
 CNC and sheet metal — together with **any AI assistant** and **any CAD program**
@@ -23,12 +23,17 @@ CNC and sheet metal — together with **any AI assistant** and **any CAD program
   (`P01`, `P02` …). When the print works, the project moves to the real
   material and process (`R01`).
 - **Roles:** Manager (questions, records), Designer (model, exports) and
-  two independent reviewers — **function** (strength, fits) and **DFM**
-  (can it be made). See [ROLES.md](ROLES.md).
+  two independent reviewers — **function** (strength, fits, interference,
+  motion clearance) and **DFM** (can it be made and assembled).
+  See [ROLES.md](ROLES.md).
 - **Three gates, all approved by you:** G0 requirements → G1 design →
   RELEASE manufacturing files.
 - **Short rules with IDs** in [rules/](rules/README.md): material (MAT),
   tolerances (TOL), DFM, drawings (DWG), naming (REV).
+- **Parts list / product tree:** `project/bom.csv`, checked and drawn by
+  `cadctl.py bom` (see the [example](examples/MB001-wall-bracket/README.md)).
+- **Released files are locked:** hashes are stored at RELEASE; any later
+  change is reported and needs a new revision.
 
 ### Workflow
 
@@ -65,6 +70,7 @@ No dependencies, Python 3.10+.
 python scripts/cadctl.py next      # what to do now, who does it, which command
 python scripts/cadctl.py status    # project state
 python scripts/cadctl.py check     # release files present and named right?
+python scripts/cadctl.py bom       # product tree from project/bom.csv (--mermaid for a diagram)
 ```
 
 Other commands: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
@@ -85,7 +91,7 @@ set one up or continue with step-by-step instructions. List and details:
 | `AGENTS.md` | Instructions for the AI: what to read, what to ask |
 | `ROLES.md` | Roles, gates, prototype → production flow |
 | `rules/` | Rule files |
-| `project/` | Your project: `requirements.md`, `workflow-state.json`, `cad/` (optional model scripts), `release/` |
+| `project/` | Your project: `requirements.md`, `workflow-state.json`, `bom.csv`, `cad/` (optional model scripts), `release/` |
 | `examples/MB001-wall-bracket/` | Filled example |
 | `scripts/cadctl.py` | State, next step, gate checks |
 

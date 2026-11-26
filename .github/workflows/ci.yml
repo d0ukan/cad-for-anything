@@ -30,6 +30,7 @@ jobs:
         run: |
           S="--state examples/MB001-wall-bracket/workflow-state.json"
           python scripts/cadctl.py $S check
+          python scripts/cadctl.py $S bom | grep -q "MB001-01"
           python scripts/cadctl.py $S next | grep -q "G1"
 
   links:

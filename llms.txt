@@ -1,9 +1,9 @@
 # cad-for-anything
 
-> AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Manager / Designer / Reviewer roles, user approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py). Start with AGENTS.md; do not read every rule file.
+> AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Roles: Manager, Designer, two independent Reviewers (function, DFM). User approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, CAD access check (MCP server, code such as CadQuery, or step-by-step instructions), BOM / product tree, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py). Start with AGENTS.md; do not read every rule file.
 
 ## Start here
-- [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order.
+- [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order, CAD/MCP access check and known MCP servers.
 - [ROLES.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/ROLES.md): Roles, gates and the prototype → production flow.
 - [rules/README.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/rules/README.md): Rule index and when to open each file.
 - Run `python scripts/cadctl.py next` (or ask the user to run it) to get the next step.

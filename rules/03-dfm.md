@@ -12,6 +12,11 @@ supplier's own limits before release (`DFM-01`).
 - **DFM-03** — Add fillets/chamfers to outside edges and inside corners where
   the process allows. Avoid sharp inside corners under load.
 - **DFM-04** — Keep wall thickness as even as possible.
+- **DFM-05** — Assembly access: every screw, nut and connector can be reached
+  with its real tool (screwdriver, hex key, wrench swing, fingers). Write the
+  assembly order; each step must be possible with the parts already in place.
+- **DFM-06** — Poka-yoke: parts that look alike or fit two ways get a feature
+  that allows only the correct way (asymmetric hole, key, marking).
 
 ## FDM (also used for prototypes)
 

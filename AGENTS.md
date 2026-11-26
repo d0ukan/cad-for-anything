@@ -31,7 +31,8 @@ marked. Save each answer with `cadctl.py set` (command in brackets).
 1. **FDM prototype first?** Will you first print and test an FDM prototype,
    then make the final part in its real material/process?
    - yes → `set phase prototype`, `set revision P01`, `set process fdm`.
-     The design is made FDM-printable first (rules/03, FDM section).
+     The design is made FDM-printable first (rules/03, FDM section) and
+     keeps every interface of the final part (MAT-08).
    - no → `set phase production`, `set revision R01`.
 2. **What is the part?** Function, what it mounts to or mates with, rough size.
 3. **Project name and code** (e.g. "Wall bracket", `MB001`) [`set project_name`, `set project_code`].
@@ -42,7 +43,8 @@ marked. Save each answer with `cadctl.py set` (command in brackets).
    CadQuery …) [`set cad_tool`]. Then do the CAD access check (section 5).
 7. **Requirements**: loads, environment (heat, UV, outdoor, chemicals),
    quantity, critical dimensions and fits, cost target. Write them into
-   `project/requirements.md`.
+   `project/requirements.md`. Prototype: also agree the test plan
+   (what to test, pass criteria). Assembly: list parts in `project/bom.csv`.
 
 Then show the filled requirements and ask the user for **G0** approval.
 
@@ -52,6 +54,8 @@ Then show the filled requirements and ask the user for **G0** approval.
   (see ROLES.md). The user always gives the final approval.
 - Design review has two reviewers: **function** and **DFM** (ROL-06). Run
   each in a new chat/session that sees only the files and requirements.
+  Interference, motion clearance and assembly access are always checked
+  (ROL-08).
   With one chat, do them one after another and do not reuse the Designer's
   reasoning.
 - Never record an approval the user did not give. Never show a check as passed

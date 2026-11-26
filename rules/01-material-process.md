@@ -24,3 +24,7 @@
   (3+ for printed parts, because layer adhesion is weak and data varies).
 - **MAT-07** — FDM prototype strength is **not** the final part strength.
   A passed prototype test proves fit and function, not the final load rating.
+- **MAT-08** — The prototype keeps every interface of the final part the same:
+  hole sizes and positions, mating faces, outer envelope, connector/screw
+  types. Only wall thickness, ribs and fillets may change for printing or
+  strength. Otherwise the prototype test proves nothing.

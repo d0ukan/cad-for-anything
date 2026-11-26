@@ -45,12 +45,21 @@
 | Bend angle | 90° | ±1° | shelf level |
 | Load flange height | 20 mm | ±0.5 | strength (see review.md F-003) |
 
-## Purchased parts
+## Parts and product tree
 
-| Part | Exact spec | Qty |
-| :--- | :--- | :--- |
-| Wood screw | 6 × 50 mm, pan head, zinc | 2 |
-| Wall plug | 8 mm nylon | 2 |
+See [bom.csv](bom.csv) (`cadctl.py bom`): kit = 1 bracket + 2 wood screws
+6 × 50 mm + 2 wall plugs 8 mm.
+
+## Prototype test plan
+
+| Test | How | Pass if | Result (P02) |
+| :--- | :--- | :--- | :--- |
+| Fit | Screw to wall with drill template, drop rail in | Rail drops in by hand, holes line up | OK |
+| Function | Shelf level check | Shelf within ±1° | OK, 0.5° |
+| Load | 5 kg on shelf front edge, 24 h | No crack, sag < 2 mm | OK, 1 mm sag |
+
+Interfaces kept from prototype to R01 (MAT-08): hole positions, rail
+cut-out, outer envelope. Changed: 3 mm PETG rib → 20 mm bent steel flange.
 
 ## Revision history
 

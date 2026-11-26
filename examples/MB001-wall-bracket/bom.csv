@@ -1,0 +1,5 @@
+part_number,name,qty,parent,type,material_spec,process,notes
+MB001-00,Wall bracket kit,1,,assembly,,,One kit per shelf end
+MB001-01,Bracket,1,MB001-00,make,"S235 steel, 2 mm, zinc plated",sheet-metal,Laser cut + 1 bend
+SCREW-6X50,Wood screw,2,MB001-00,buy,"6 x 50 mm, pan head, zinc",,
+PLUG-8,Wall plug,2,MB001-00,buy,8 mm nylon,,

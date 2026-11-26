@@ -66,6 +66,12 @@ class TestTemplate(Base):
     def test_example_is_valid(self):
         state = cadctl.load_state(ROOT / "examples" / "MB001-wall-bracket" / "workflow-state.json")
         self.assertEqual(state["phase"], "production")
+        rows = cadctl.read_bom(ROOT / "examples" / "MB001-wall-bracket" / "bom.csv")
+        self.assertTrue(rows)
+        self.assertEqual(cadctl.bom_errors(rows, "MB001"), [])
+
+    def test_template_bom_has_header_only(self):
+        self.assertEqual(cadctl.read_bom(ROOT / "project" / "bom.csv"), [])
 
 
 class TestValidation(Base):
@@ -150,6 +156,7 @@ class TestTwoReviewers(Base):
         self.fill_prototype()
         self.release_current("MB001-P01", ["step", "stl"])
         self.ok("promote", "--evidence", "test ok")
+        self.ok("set", "material", "S235 2 mm")
         self.ok("approve", "G0", "--evidence", "chat")
 
     def test_prototype_needs_one_review(self):
@@ -176,6 +183,101 @@ class TestTwoReviewers(Base):
         code, out = self.run_cli("approve", "G1", "--evidence", "chat")
         self.assertEqual(code, 1)
         self.assertIn("dfm (FAIL", out)
+
+
+class TestReviewFixes(Base):
+    def test_requirement_change_after_g0_resets(self):
+        self.fill_prototype()
+        self.ok("approve", "G0", "--evidence", "chat")
+        out = self.ok("set", "material", "PLA")
+        self.assertIn("WARNING", out)
+        state = cadctl.load_state(self.state)
+        self.assertEqual(state["gates"]["G0"]["status"], "PENDING")
+
+    def test_same_value_or_name_change_keeps_g0(self):
+        self.fill_prototype()
+        self.ok("approve", "G0", "--evidence", "chat")
+        self.ok("set", "material", "PETG")
+        self.ok("set", "project_name", "Bracket v2")
+        state = cadctl.load_state(self.state)
+        self.assertEqual(state["gates"]["G0"]["status"], "APPROVED")
+
+    def test_released_file_change_detected(self):
+        self.fill_prototype()
+        self.release_current("MB001-P01", ["step", "stl"])
+        self.assertIn("OK", self.ok("check"))
+        (self.tmp / "release" / "MB001-P01" / "MB001-P01.stl").write_text("changed")
+        code, out = self.run_cli("check")
+        self.assertEqual(code, 1)
+        self.assertIn("changed after RELEASE: MB001-P01.stl", out)
+        self.assertIn("REV-04", self.ok("next"))
+
+    def test_promote_clears_material(self):
+        self.fill_prototype()
+        self.release_current("MB001-P01", ["step", "stl"])
+        self.ok("promote", "--evidence", "ok")
+        state = cadctl.load_state(self.state)
+        self.assertIsNone(state["material"])
+        self.assertIn("material", self.ok("next"))
+
+
+BOM_HEADER = "part_number,name,qty,parent,type,material_spec,process,notes\n"
+
+
+class TestBom(Base):
+    def write_bom(self, body):
+        (self.tmp / "bom.csv").write_text(BOM_HEADER + body, encoding="utf-8")
+
+    def setUp(self):
+        super().setUp()
+        self.ok("set", "phase", "production")
+        self.ok("set", "project_code", "MB001")
+
+    def test_no_bom_is_fine(self):
+        self.assertIn("no parts", self.ok("bom"))
+        self.assertIn("OK", self.ok("check"))
+
+    def test_tree_and_totals(self):
+        self.write_bom(
+            "MB001-00,Shelf kit,1,,assembly,,,\n"
+            "MB001-01,Bracket,2,MB001-00,assembly,,,\n"
+            "MB001-02,Plate,1,MB001-01,make,S235 2 mm,sheet-metal,\n"
+            "SCR-6x50,Wood screw,2,MB001-01,buy,6x50 zinc,,\n"
+            "PLUG-8,Wall plug,4,MB001-00,buy,8 mm nylon,,\n")
+        out = self.ok("bom")
+        self.assertIn("MB001-00  Shelf kit", out)
+        self.assertIn("`-- 2 x SCR-6x50", out)
+        self.assertRegex(out, r"4 x SCR-6x50")  # 2 brackets x 2 screws
+        self.assertRegex(out, r"4 x PLUG-8")
+        self.assertIn("flowchart TD", self.ok("bom", "--mermaid"))
+
+    def test_errors(self):
+        self.write_bom(
+            "MB001-00,Kit,1,,assembly,,,\n"
+            "MB001-01,Bracket,0,MB001-00,make,,,\n"
+            "X-1,Part,1,MB001-00,make,Al,cnc,\n")
+        code, out = self.run_cli("bom")
+        self.assertEqual(code, 1)
+        self.assertIn("qty must be", out)
+        self.assertIn("needs material_spec", out)
+        self.assertIn("X-1 should be MB001-NN", out)
+        self.assertEqual(self.run_cli("check")[0], 1)
+
+    def test_tree_errors(self):
+        self.write_bom(
+            "MB001-00,Kit,1,,assembly,,,\n"
+            "MB001-01,Bracket,1,MB001-09,make,Al,cnc,\n"
+            "MB001-02,Pin,1,,make,Steel,cnc,\n")
+        code, out = self.run_cli("bom")
+        self.assertEqual(code, 1)
+        self.assertIn("exactly one top item", out)
+        self.assertIn("parent MB001-09 not found", out)
+
+    def test_missing_column(self):
+        (self.tmp / "bom.csv").write_text("part_number,name\nA,B\n", encoding="utf-8")
+        code, out = self.run_cli("bom")
+        self.assertEqual(code, 1)
+        self.assertIn("missing columns", out)
 
 
 class TestFlow(Base):

@@ -6,7 +6,7 @@ Open a file only at the step that needs it.
 | File | Prefix | Open when |
 | :--- | :--- | :--- |
 | [01-material-process.md](01-material-process.md) | MAT | Before G0 (choosing process and material) |
-| [02-tolerances-fits.md](02-tolerances-fits.md) | TOL | Design, when parts mate or a dimension is critical |
+| [02-tolerances-fits.md](02-tolerances-fits.md) | TOL | Design and review, when parts mate, move or a dimension is critical (interference: TOL-09…11) |
 | [03-dfm.md](03-dfm.md) | DFM | Design and review — only the section for your process |
 | [04-drawings-delivery.md](04-drawings-delivery.md) | DWG | After G1, before export |
 | [05-naming-revision.md](05-naming-revision.md) | REV | Project start and every export |

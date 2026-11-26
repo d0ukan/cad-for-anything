@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.step binary
+*.stp binary
+*.stl binary
+*.3mf binary
+*.pdf binary
+*.dxf text eol=lf
