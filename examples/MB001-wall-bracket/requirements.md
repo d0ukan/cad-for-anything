@@ -7,7 +7,7 @@
 | Project name | Wall bracket |
 | Project code | MB001 |
 | Phase / revision | production R01 (after prototypes P01, P02) |
-| CAD program | FreeCAD (Sheet Metal workbench) |
+| CAD program | FreeCAD (Sheet Metal workbench), manual (no MCP) |
 | Units / tolerance standard | mm + ISO 2768-m |
 
 ## Function

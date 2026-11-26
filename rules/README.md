@@ -22,3 +22,8 @@ Open a file only at the step that needs it.
   formula and safety factor, so the user and Reviewer can check them.
 - **AI-04** — Keep answers short. Ask only questions that change the design.
 - **AI-05** — The user's own decisions in `requirements.md` override defaults here.
+- **AI-06** — With CAD access (MCP server or code), the AI may model and
+  export directly, but: work only in the user's project files, ask before
+  overwriting or deleting a model, save the model source or a STEP after
+  each change, and never skip a gate or review because the AI built the
+  model itself.

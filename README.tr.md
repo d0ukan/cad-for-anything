@@ -2,7 +2,7 @@
 
 [English](README.md) · **Türkçe**
 
-[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.2.0 ([değişiklikler](CHANGELOG.md))
+[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · Lisans: [MIT](LICENSE) · Sürüm: v0.3.0 ([değişiklikler](CHANGELOG.md))
 
 Mekanik parça ve montaj tasarımı (3D baskı, CNC, sac metal) için küçük bir
 şablon. **Herhangi bir yapay zeka** ve **herhangi bir CAD programı** ile
@@ -50,6 +50,14 @@ python scripts/cadctl.py check     # üretim dosyaları var ve doğru adlı mı?
 Diğer komutlar: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
 `promote`, `name`. Ayrıntı: `python scripts/cadctl.py -h`.
 
+## CAD erişimi (isteğe bağlı)
+
+CAD programınızı söyledikten sonra yapay zeka ona bir MCP sunucusu üzerinden
+erişip erişemediğini kontrol eder. Erişemiyorsa programınız için bilinen MCP
+sunucularını gösterir (Fusion, Inventor, SolidWorks, CATIA, Onshape, FreeCAD)
+ve kurmak mı yoksa adım adım tarifle devam etmek mi istediğinizi sorar.
+Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after-question-6).
+
 ## Dosyalar
 
 | Yol | Ne |
@@ -57,7 +65,7 @@ Diğer komutlar: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
 | `AGENTS.md` | Yapay zeka için talimat: ne okur, ne sorar |
 | `ROLES.md` | Roller, kapılar, prototip → üretim akışı |
 | `rules/` | Kural dosyaları |
-| `project/` | Sizin projeniz: `requirements.md`, `workflow-state.json`, `release/` |
+| `project/` | Sizin projeniz: `requirements.md`, `workflow-state.json`, `cad/` (isteğe bağlı model betikleri), `release/` |
 | `examples/MB001-wall-bracket/` | Doldurulmuş örnek |
 | `scripts/cadctl.py` | Durum, sıradaki adım, kapı kontrolü |
 

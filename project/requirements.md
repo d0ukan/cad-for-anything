@@ -9,7 +9,7 @@ Kept by the Manager. Approved at G0. Write "decide later" for open items.
 | Project name | |
 | Project code | |
 | Phase / revision | prototype P01 / production R01 |
-| CAD program | |
+| CAD program (+ access: MCP / code / manual) | |
 | Units / tolerance standard | mm + ISO 2768-m |
 
 ## Function

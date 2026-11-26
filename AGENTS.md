@@ -38,7 +38,8 @@ marked. Save each answer with `cadctl.py set` (command in brackets).
 4. **Final process and material** (CNC aluminium, sheet steel, SLS nylon …)
    [`set target_process`, `set material`]. In prototype phase "decide later" is allowed.
 5. **Units and tolerance standard**: mm + ISO, or inch + ASME [`set units`, `set tolerance_standard`].
-6. **CAD program** (FreeCAD, Fusion, SolidWorks, Onshape, CadQuery …) [`set cad_tool`].
+6. **CAD program** (FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape,
+   CadQuery …) [`set cad_tool`]. Then do the CAD access check (section 5).
 7. **Requirements**: loads, environment (heat, UV, outdoor, chemicals),
    quantity, critical dimensions and fits, cost target. Write them into
    `project/requirements.md`.
@@ -64,7 +65,38 @@ Then show the filled requirements and ask the user for **G0** approval.
   pressure vessels, vehicles/aircraft structure, medical contact.
   You may keep helping, but say this clearly (`AI-01`).
 
-## 5. Prototype → production
+## 5. CAD access check (after question 6)
+
+1. **Look at your own tools.** Is an MCP tool for the chosen CAD program
+   connected? Call a harmless read-only tool (e.g. list open documents) to
+   confirm it works. Do not guess.
+2. **Connected** → tell the user, and as Designer build and change the model
+   through it.
+3. **Not connected** → show the user the options for their program from the
+   table below and ask: *set up an MCP server, or continue with step-by-step
+   instructions?* Never install anything yourself without the user's yes.
+4. **CadQuery or other code-based CAD** → no MCP needed if you can run code.
+   Write the script in `project/cad/`, run it, export STEP/STL.
+5. **Nothing available** → step-by-step CAD instructions (section 4).
+
+Record the result in `requirements.md` → Identity → CAD program
+(e.g. "Fusion, via MCP" or "SolidWorks, manual"). Gates and reviews stay the
+same in all cases (`AI-06`).
+
+Known MCP servers. Community-reported and **not tested by this repo**;
+check the project before installing it.
+
+| CAD | Official | Community |
+| :--- | :--- | :--- |
+| Fusion | [Autodesk MCP servers](https://help.autodesk.com/view/ADSKMCP/ENU/) | [faust-machines/fusion360-mcp-server](https://github.com/faust-machines/fusion360-mcp-server) |
+| Inventor | Local MCP server mentioned in Inventor 2027 help; check your version | [NeonGlay/inventor-mcp](https://github.com/NeonGlay/inventor-mcp) (Windows, COM) |
+| SolidWorks | — | [eyfel/mcp-server-solidworks](https://github.com/eyfel/mcp-server-solidworks) |
+| CATIA V5 | — | [daiemon12/catia-v5-mcp-server](https://github.com/daiemon12/catia-v5-mcp-server) (Windows, licensed CATIA) |
+| Onshape | FeatureScript MCP server (Onshape Labs, Onshape App Store) | — |
+| FreeCAD | — | [neka-nat/freecad-mcp](https://github.com/neka-nat/freecad-mcp), [spkane/freecad-addon-robust-mcp-server](https://github.com/spkane/freecad-addon-robust-mcp-server) |
+| CadQuery | Not needed (code) | — |
+
+## 6. Prototype → production
 
 When a prototype revision is released, the user prints and tests it.
 - Test failed or needs changes → `cadctl.py bump` (P01 → P02).

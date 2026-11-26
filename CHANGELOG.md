@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.0 — 2026-11-26
+
+- CAD access check (AGENTS.md section 5): after the user names the CAD
+  program, the AI checks its own MCP tools; if none, it shows known MCP
+  servers and asks before any setup. Rule AI-06.
+- Known MCP servers listed for Fusion, Inventor, SolidWorks, CATIA V5,
+  Onshape, FreeCAD (not tested by this repo).
+- `project/cad/` for model scripts.
+
 ## v0.2.0 — 2026-11-25
 
 - Two independent design reviewers: function and DFM (ROL-06).

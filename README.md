@@ -2,7 +2,7 @@
 
 **English** · [Türkçe](README.tr.md)
 
-[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · License: [MIT](LICENSE) · Version: v0.2.0 ([changelog](CHANGELOG.md))
+[![ci](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml) · License: [MIT](LICENSE) · Version: v0.3.0 ([changelog](CHANGELOG.md))
 
 A small template for designing mechanical parts and assemblies — 3D printing,
 CNC and sheet metal — together with **any AI assistant** and **any CAD program**
@@ -48,6 +48,14 @@ python scripts/cadctl.py check     # release files present and named right?
 Other commands: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
 `promote`, `name`. Run `python scripts/cadctl.py -h`.
 
+## CAD access (optional)
+
+After you name your CAD program, the AI checks whether it can reach it
+through an MCP server. If not, it shows you known MCP servers for your program
+(Fusion, Inventor, SolidWorks, CATIA, Onshape, FreeCAD) and asks whether to
+set one up or continue with step-by-step instructions. List and details:
+[AGENTS.md, section 5](AGENTS.md#5-cad-access-check-after-question-6).
+
 ## Files
 
 | Path | What |
@@ -55,7 +63,7 @@ Other commands: `set`, `approve`, `review`, `block`, `unblock`, `bump`,
 | `AGENTS.md` | Instructions for the AI: what to read, what to ask |
 | `ROLES.md` | Roles, gates, prototype → production flow |
 | `rules/` | Rule files |
-| `project/` | Your project: `requirements.md`, `workflow-state.json`, `release/` |
+| `project/` | Your project: `requirements.md`, `workflow-state.json`, `cad/` (optional model scripts), `release/` |
 | `examples/MB001-wall-bracket/` | Filled example |
 | `scripts/cadctl.py` | State, next step, gate checks |
 
