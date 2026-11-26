@@ -29,6 +29,10 @@ supplier's own limits before release (`DFM-01`).
 - **DFM-14** — Minimum feature 0.8 mm; embossed text ≥ 0.6 mm high.
 - **DFM-15** — First-layer chamfer (~0.4 mm) on edges touching the bed to
   hide elephant foot.
+- **DFM-16** — Screws M5 and smaller: do not model threads. Ask the user
+  once and record the answer in `requirements.md`: plain hole with
+  clearance (M2.5 → 2.75, M3 → 3.2, M4 → 4.3, M5 → 5.3 mm), tap or
+  self-tap after printing, or heat-set insert (TOL-06).
 
 ## SLA / SLS
 

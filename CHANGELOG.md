@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.2 — 2026-11-26
+
+- DFM-16: FDM screws M5 and smaller get no modelled thread; the AI asks once
+  (clearance hole such as M3 → 3.2 mm, tap after print, or heat-set insert)
+  and records it in `requirements.md`. Start-up reading unchanged.
+
 ## v0.6.1 — 2026-11-26
 
 Lower token use (start-up reading about 20 % smaller):
