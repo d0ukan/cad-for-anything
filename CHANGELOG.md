@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.6.0 — 2026-11-26
+
+- Example: the bracket model also in JSCAD / JavaScript
+  (`cad/mb001_bracket.js`, `npm run build` writes STL).
+- CI: the JSCAD model is built on Windows, macOS and Linux.
+- AGENTS.md, READMEs, `llms.txt`: JSCAD listed as code-based CAD.
+- `.gitignore`: example model outputs and `node_modules/`.
+- Fixes: prototype `material` is the print material (AGENTS.md question 4);
+  ROLES.md G0 list matches the tool; example review F-001 fix and envelope
+  now match the model; CONTRIBUTING notes the example models.
+
 ## v0.5.1 — 2026-11-26
 
 - AGENTS.md: Git is optional; the AI never commits or pushes unless the

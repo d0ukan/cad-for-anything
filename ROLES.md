@@ -16,7 +16,7 @@ sub-agents inside the same session (ROL-09). The **user** has the final say.
 
 | Gate | Meaning | Needs before approval |
 | :--- | :--- | :--- |
-| **G0** | Requirements approved | Phase, project code, revision, units, process, material, `requirements.md` filled |
+| **G0** | Requirements approved | Project name and code, phase, revision, units, tolerance standard, CAD program, process, material, `requirements.md` filled |
 | **G1** | Design approved | G0 for this revision, design reviews PASS (ROL-06), no open blocking issues, Manager checklist (ROL-07) |
 | **RELEASE** | Manufacturing files approved | G1, exported files in `project/release/<CODE>-<REV>/`, Reviewer `release PASS` |
 

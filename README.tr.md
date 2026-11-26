@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.5.1-1d4f7a" alt="sürüm v0.5.1">
+  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.6.0-1d4f7a" alt="sürüm v0.6.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-green" alt="MIT lisansı"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/ba%C4%9F%C4%B1ml%C4%B1l%C4%B1k-yok-brightgreen" alt="bağımlılık yok">
@@ -19,7 +19,7 @@
 Mekanik parça ve montaj tasarımı (3D baskı, CNC, sac metal) için küçük bir
 şablon. **Herhangi bir yapay zeka** ve **herhangi bir CAD programı** ile
 çalışır (FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery,
-OpenSCAD …). **Windows, macOS ve Linux**'ta kullanılır.
+OpenSCAD, JSCAD …). **Windows, macOS ve Linux**'ta kullanılır.
 
 Kural dosyaları İngilizcedir; yapay zeka sizinle Türkçe konuşabilir.
 
@@ -202,7 +202,7 @@ Liste ve ayrıntılar: [AGENTS.md, bölüm 5](AGENTS.md#5-cad-access-check-after
 | CAD programı | Yapay zeka nasıl çalışır |
 | :--- | :--- |
 | Fusion · Inventor · SolidWorks · CATIA · Onshape · FreeCAD | 🔌 Bağlıysa MCP sunucusu, değilse 📝 adım adım tarif |
-| CadQuery · OpenSCAD (kod) | 🐍 Yapay zeka `project/cad/` içine betik yazar ve çalıştırır (örnek: [`.py`](examples/MB001-wall-bracket/cad/mb001_bracket.py), [`.scad`](examples/MB001-wall-bracket/cad/mb001_bracket.scad)) |
+| CadQuery · OpenSCAD · JSCAD (kod) | 🐍 Yapay zeka `project/cad/` içine betik yazar ve çalıştırır (aynı braket [Python](examples/MB001-wall-bracket/cad/mb001_bracket.py), [OpenSCAD](examples/MB001-wall-bracket/cad/mb001_bracket.scad), [JavaScript](examples/MB001-wall-bracket/cad/mb001_bracket.js) ile; CI'da Windows, macOS ve Linux'ta derlenir) |
 | Diğerleri | 📝 Adım adım tarif; siz ekran görüntüsü veya dosya gönderirsiniz |
 
 ## 📁 Dosyalar

@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# Example model outputs (JSCAD / OpenSCAD / CadQuery)
+node_modules/
+examples/*/cad/package-lock.json
+examples/*/cad/*.stl
+examples/*/cad/*.step

@@ -13,8 +13,8 @@
 ## Function
 
 - Holds one end of a wooden shelf (Ø25 mm clothes rail under it).
-- Mounts to a brick wall with 2 × M6 screws + plugs.
-- Envelope: 120 × 40 × 100 mm.
+- Mounts to a brick wall with 2 × 6 × 50 mm wood screws + 8 mm wall plugs (see bom.csv).
+- Envelope: 100 × 40 × 100 mm (arm × width × height).
 
 ## Loads and environment
 

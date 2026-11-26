@@ -1,6 +1,6 @@
 # cad-for-anything
 
-> AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Roles: Manager, Designer, two independent Reviewers (function, DFM). User approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, CAD access check (MCP server, code such as CadQuery or OpenSCAD, or step-by-step instructions), BOM / product tree, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py) that runs on Windows, macOS and Linux. Start with AGENTS.md; do not read every rule file.
+> AI-agnostic, CAD-agnostic template for designing mechanical parts and small assemblies (FDM/SLA/SLS printing, CNC, sheet metal). Roles: Manager, Designer, two independent Reviewers (function, DFM). User approval gates (G0 requirements, G1 design, RELEASE files), optional FDM prototype phase before the final material, CAD access check (MCP server, code such as CadQuery, OpenSCAD or JSCAD, or step-by-step instructions), BOM / product tree, short rules with IDs, and a dependency-free Python tool (scripts/cadctl.py) that runs on Windows, macOS and Linux. Start with AGENTS.md; do not read every rule file.
 
 ## Start here
 - [AGENTS.md](https://raw.githubusercontent.com/d0ukan/cad-for-anything/main/AGENTS.md): What to read, which questions to ask and in which order, CAD/MCP access check and known MCP servers.

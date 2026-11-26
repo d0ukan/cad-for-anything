@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml"><img src="https://github.com/d0ukan/cad-for-anything/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
-  <img src="https://img.shields.io/badge/version-v0.5.1-1d4f7a" alt="version v0.5.1">
+  <img src="https://img.shields.io/badge/version-v0.6.0-1d4f7a" alt="version v0.6.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen" alt="no dependencies">
@@ -18,7 +18,7 @@
 
 A small template for designing mechanical parts and assemblies — 3D printing,
 CNC and sheet metal — together with **any AI assistant** and **any CAD program**
-(FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery, OpenSCAD …)
+(FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape, CadQuery, OpenSCAD, JSCAD …)
 on **Windows, macOS and Linux**.
 
 | 💬 Ask | 📐 Design | 🔍 Review | 📦 Release |
@@ -198,7 +198,7 @@ List and details: [AGENTS.md, section 5](AGENTS.md#5-cad-access-check-after-ques
 | CAD program | How the AI works with it |
 | :--- | :--- |
 | Fusion · Inventor · SolidWorks · CATIA · Onshape · FreeCAD | 🔌 MCP server if connected, otherwise 📝 step-by-step instructions |
-| CadQuery · OpenSCAD (code) | 🐍 The AI writes and runs a script in `project/cad/` (example: [`.py`](examples/MB001-wall-bracket/cad/mb001_bracket.py), [`.scad`](examples/MB001-wall-bracket/cad/mb001_bracket.scad)) |
+| CadQuery · OpenSCAD · JSCAD (code) | 🐍 The AI writes and runs a script in `project/cad/` (same bracket in [Python](examples/MB001-wall-bracket/cad/mb001_bracket.py), [OpenSCAD](examples/MB001-wall-bracket/cad/mb001_bracket.scad), [JavaScript](examples/MB001-wall-bracket/cad/mb001_bracket.js); built in CI on Windows, macOS and Linux) |
 | Anything else | 📝 Step-by-step instructions; you send screenshots or files back |
 
 ## 📁 Files

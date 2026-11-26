@@ -64,6 +64,26 @@ jobs:
           "$SCAD" -o MB001-R01.stl examples/MB001-wall-bracket/cad/mb001_bracket.scad
           test -s MB001-R01.stl
 
+  jscad:
+    # The JSCAD (JavaScript) example model must build on all three systems.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: examples/MB001-wall-bracket/cad
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: test -s MB001-R01.stl
+
   links:
     runs-on: ubuntu-latest
     steps:

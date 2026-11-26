@@ -37,10 +37,12 @@ marked. Save each answer with `cadctl.py set` (command in brackets).
 2. **What is the part?** Function, what it mounts to or mates with, rough size.
 3. **Project name and code** (e.g. "Wall bracket", `MB001`) [`set project_name`, `set project_code`].
 4. **Final process and material** (CNC aluminium, sheet steel, SLS nylon …)
-   [`set target_process`, `set material`]. In prototype phase "decide later" is allowed.
+   [`set target_process`]. Production: also `set material` (final grade).
+   Prototype: `set material` is the **print** material (MAT-02, e.g. PETG);
+   the final material goes into `requirements.md` ("decide later" allowed).
 5. **Units and tolerance standard**: mm + ISO, or inch + ASME [`set units`, `set tolerance_standard`].
 6. **CAD program** (FreeCAD, Fusion, Inventor, SolidWorks, CATIA, Onshape,
-   CadQuery, OpenSCAD …) [`set cad_tool`]. Then do the CAD access check (section 5).
+   CadQuery, OpenSCAD, JSCAD …) [`set cad_tool`]. Then do the CAD access check (section 5).
 7. **Requirements**: loads, environment (heat, UV, outdoor, chemicals),
    quantity, critical dimensions and fits, cost target. Write them into
    `project/requirements.md`. Prototype: also agree the test plan
@@ -85,9 +87,10 @@ Then show the filled requirements and ask the user for **G0** approval.
 3. **Not connected** → show the user the options for their program from the
    table below and ask: *set up an MCP server, or continue with step-by-step
    instructions?* Never install anything yourself without the user's yes.
-4. **CadQuery, OpenSCAD or other code-based CAD** → no MCP needed if you
+4. **CadQuery, OpenSCAD, JSCAD or other code-based CAD** → no MCP needed if you
    can run code. Write the script in `project/cad/`, run it, export
-   STEP/STL (OpenSCAD: STL/3MF only). Both run on Windows, macOS and Linux.
+   STEP/STL (OpenSCAD, JSCAD: STL/3MF only, no STEP). All run on Windows,
+   macOS and Linux. Examples: `examples/MB001-wall-bracket/cad/`.
 5. **Nothing available** → step-by-step CAD instructions (section 4).
 
 Record the result in `requirements.md` → Identity → CAD program
@@ -105,7 +108,7 @@ check the project before installing it.
 | CATIA V5 | — | [daiemon12/catia-v5-mcp-server](https://github.com/daiemon12/catia-v5-mcp-server) (Windows, licensed CATIA) |
 | Onshape | FeatureScript MCP server (Onshape Labs, Onshape App Store) | — |
 | FreeCAD | — | [neka-nat/freecad-mcp](https://github.com/neka-nat/freecad-mcp), [spkane/freecad-addon-robust-mcp-server](https://github.com/spkane/freecad-addon-robust-mcp-server) |
-| CadQuery, OpenSCAD | Not needed (code) | — |
+| CadQuery, OpenSCAD, JSCAD | Not needed (code) | — |
 
 ## 6. Prototype → production
 

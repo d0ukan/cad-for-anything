@@ -1,0 +1,13 @@
+{
+  "name": "mb001-bracket-jscad",
+  "private": true,
+  "description": "MB001 wall bracket, simplified JSCAD model (JavaScript, Windows/macOS/Linux)",
+  "type": "commonjs",
+  "scripts": {
+    "build": "node mb001_bracket.js"
+  },
+  "dependencies": {
+    "@jscad/modeling": "2.13.0",
+    "@jscad/stl-serializer": "2.1.23"
+  }
+}

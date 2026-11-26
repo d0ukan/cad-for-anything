@@ -11,6 +11,7 @@ A shelf bracket that went through two FDM prototypes and then moved to
 | [bom.csv](bom.csv) | Parts list / product tree |
 | [cad/mb001_bracket.py](cad/mb001_bracket.py) | Simplified CadQuery model of R01 (optional; needs `pip install cadquery`; writes STEP) |
 | [cad/mb001_bracket.scad](cad/mb001_bracket.scad) | The same model in OpenSCAD (optional; `openscad -o MB001-R01.stl mb001_bracket.scad`) |
+| [cad/mb001_bracket.js](cad/mb001_bracket.js) | The same model in JSCAD / JavaScript (optional; Node.js 18+: `npm install`, `npm run build`; writes STL) |
 
 Product tree (`cadctl.py bom --mermaid`):
 

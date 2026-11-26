@@ -7,6 +7,9 @@ Keep it small. A change should make the template easier to use, not bigger.
   clear test where possible, not "be careful".
 - **README:** change `README.md` and `README.tr.md` together.
 - **cadctl.py:** standard library only. Add a test in `tests/` for each change.
+- **Example models** (`examples/*/cad/`): the Python, OpenSCAD and JSCAD
+  files describe the same part; change them together. CI builds them on
+  Windows, macOS and Linux.
 - **Before a PR:** run
   `python -m unittest discover -s tests -v` and
   `python scripts/cadctl.py --state examples/MB001-wall-bracket/workflow-state.json next`.
